@@ -1,7 +1,33 @@
-[gd_scene format=3 uid="uid://fnne2y61h4fi"]
+[gd_scene load_steps=3 format=3 uid="uid://fnne2y61h4fi"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4xowi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_a202f"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6014458, 0)
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.56828225, -0.44089967)
+
+[node name="XRController3D" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4824499, -1.0695217, -0.581526)
+tracker = &"right_hand"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/XRController3D"]
+transform = Transform3D(0.13145888, 0, 0, 0, 0.12407309, 0, 0, 0, 0.12389338, -0.003996372, 0, 0)
+mesh = SubResource("BoxMesh_4xowi")
+
+[node name="XRController3D2" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.090880245, -1.0695217, -0.581526)
+tracker = &"left_hand"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D/XRController3D2"]
+transform = Transform3D(0.13145888, 0, 0, 0, 0.12407309, 0, 0, 0, 0.12389338, -0.45458925, 0, 0)
+mesh = SubResource("BoxMesh_4xowi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0579089, 0)
+mesh = SubResource("CapsuleMesh_a202f")

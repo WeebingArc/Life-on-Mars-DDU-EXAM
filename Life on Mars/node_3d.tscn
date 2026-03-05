@@ -20,8 +20,6 @@ size = Vector3(1.9963379, 0.010253906, 1.9931641)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r3fl7"]
 render_priority = 0
 shader = ExtResource("3_a0tk4")
-shader_parameter/edge_threshold = 0.1
-shader_parameter/line_color = Color(0, 0, 0, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_jka67"]
 material = SubResource("ShaderMaterial_r3fl7")

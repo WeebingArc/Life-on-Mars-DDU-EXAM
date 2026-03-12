@@ -1,12 +1,25 @@
+// Her defineres shaderen er i en 3D projekt og den skal 
+// ignorerer alle lys effekter der er i projekten.
 shader_type spatial;
 render_mode unshaded, depth_draw_never;
 
+// Dette siger at der sker en blanding outlineen med det sidste billede
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+// Her bliver der sagt at forskellen i normal textureen
+// som skal der laves en sort linje, som laver outlineen.
 uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear_mipmap;
 
+// Her er forskellige parameter der ændre hvordan selve effekten ser ud, 
+// som hvor tyk linjen er og hvilke farve det er
 uniform float edge_threshold = 0.1;
 uniform vec3 line_color : source_color = vec3(0, 0, 0);
 
+// Sobel-filtre er brugt her for at finde hjørnerne i det 
+// renderede billede i projektet, både på y-aksen og x-aksen.
+
+// En Sobel-filter er noget der sætter en billede i sort og hvid, men er mere intenst
+// sort omkringer hjørner
 const mat3 sobel_y = mat3(
 	vec3( 1.0,  0.0, -1.0),
 	vec3( 2.0,  0.0, -2.0),
@@ -19,21 +32,31 @@ const mat3 sobel_x = mat3(
 	vec3(-1.0, -2.0, -1.0)
 );
 
+// Her bliver texture normels omskrevet til en ordenlig normel
+// Pga af denne omskrevelse er fordi texture normals er i 0..1
+// men rigtige normals er -1..1
 vec3 normalize_normal(vec3 normal){
 	return normalize(normal * 2.0 - 1.0);
 }
 
+// Her sættes Quad Mesh'en til at ikke kun være på en objekt,
+// men så er på hele skærmen
 void vertex(){
 	// Fullscreen quad
 	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
 }
 
+// Her bruges alle de forskellige functioner der læser farverne på skærmen,
+// læse normalsene rundt omkring forskellige pixels på skærmen,
+// måle forskellen på normals,
+// anvende sobel-filteren,
+// bestemme hvis en pixel er en edge
+// og til sidst farve outlinen over objektet 
 void fragment() {
 
 	vec2 uv = SCREEN_UV;
 	vec4 screen_color = texture(SCREEN_TEXTURE, uv);
 
-	// Proper pixel size
 	vec2 offset = 1.0 / VIEWPORT_SIZE;
 
 	vec3 normal = normalize_normal(texture(NORMAL_TEXTURE, uv).rgb);
@@ -65,11 +88,10 @@ void fragment() {
 
 	float edge = length(vec2(edge_x, edge_y));
 
-	// Create edge mask without branching
 	float edge_mask = step(edge_threshold, edge);
 
-	// Blend original screen with line color
 	vec3 final_color = mix(screen_color.rgb, line_color, edge_mask);
 
+// Dette sætter farverne på skærmen så effekten kan virke
 	ALBEDO = final_color;
 }

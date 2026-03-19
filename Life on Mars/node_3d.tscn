@@ -1,20 +1,12 @@
 [gd_scene format=3 uid="uid://fnne2y61h4fi"]
 
+[ext_resource type="ArrayMesh" uid="uid://0jiedjcrkfkh" path="res://Models/terrain.obj" id="1_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_r3fl7"]
-[ext_resource type="Texture2D" uid="uid://dscq5lb14y85l" path="res://Texture/redsand.jpg" id="2_jka67"]
+[ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
+[ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsk3o"]
-resource_local_to_scene = true
-render_priority = 2
-albedo_texture = ExtResource("2_jka67")
-uv1_scale = Vector3(5, 5, 5)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_4arys"]
-material = SubResource("StandardMaterial3D_jsk3o")
-size = Vector2(50, 50)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6iypd"]
-size = Vector3(1.9963379, 0.010253906, 1.9931641)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
+albedo_texture = ExtResource("2_r3fl7")
 
 [sub_resource type="Shader" id="Shader_noarx"]
 code = "shader_type spatial;
@@ -104,29 +96,45 @@ material = SubResource("ShaderMaterial_r3fl7")
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0tk4"]
+[sub_resource type="Environment" id="Environment_noarx"]
+background_mode = 2
+sky = ExtResource("4_r3fl7")
+ambient_light_sky_contribution = 0.22
+glow_intensity = 0.1
+glow_bloom = 1.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+volumetric_fog_albedo = Color(0.8526276, 0.5516884, 0.2805634, 1)
+volumetric_fog_emission = Color(0.112561814, 0.03581224, 0.0049137464, 1)
+volumetric_fog_detail_spread = 0.5
+adjustment_enabled = true
+adjustment_saturation = 1.83
 
-[sub_resource type="BoxMesh" id="BoxMesh_r3fl7"]
-material = SubResource("StandardMaterial3D_a0tk4")
+[node name="Life On Mars" type="Node3D" unique_id=1023627608]
 
-[node name="Node3D" type="Node3D" unique_id=1023627608]
+[node name="World" type="Node" parent="." unique_id=355444867]
+
+[node name="Mars Base" type="Node" parent="World" unique_id=950307457]
+
+[node name="Terrain" type="MeshInstance3D" parent="World" unique_id=762353242]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -63.185127, -3.9259186, -28.558033)
+mesh = ExtResource("1_a0tk4")
+surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
 
 [node name="PlayerOrigin" parent="." unique_id=370237807 instance=ExtResource("1_r3fl7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0525377, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2060587190]
-mesh = SubResource("PlaneMesh_4arys")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D" unique_id=1175820503]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0015869141, -0.006591797, 0.0014648438)
-shape = SubResource("BoxShape3D_6iypd")
 
 [node name="Find Edges Shader" type="MeshInstance3D" parent="." unique_id=1674412334]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_jka67")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1901929411]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.231724, 3.5563169, -3.8146973e-06)
-mesh = SubResource("BoxMesh_r3fl7")
-skeleton = NodePath("../Find Edges Shader")
+[node name="Sun & Environment" type="Node" parent="." unique_id=41524546]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Sun & Environment" unique_id=435177951]
+environment = SubResource("Environment_noarx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sun & Environment" unique_id=1734107265]
+transform = Transform3D(-0.2945076, 0.91542965, 0.27432486, -0.9322228, -0.33836672, 0.12833023, 0.2102997, -0.21793762, 0.95303583, 0, 0, 0)
+light_color = Color(0.89494604, 0.6802879, 0.5851749, 1)
+light_energy = 0.366

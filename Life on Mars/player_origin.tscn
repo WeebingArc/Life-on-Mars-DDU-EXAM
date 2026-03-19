@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c758ox4n0i37o"]
+
+[ext_resource type="PackedScene" uid="uid://bq86r4yll8po" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_fullglove_low.tscn" id="1_g17ji"]
+[ext_resource type="Script" uid="uid://ck4yn3hxuobj7" path="res://addons/godot-xr-tools/player/player_body.gd" id="1_n1flv"]
+[ext_resource type="Script" uid="uid://c556fygvtu7ea" path="res://Scripts/xr_viewport.gd" id="1_uhx6q"]
+[ext_resource type="PackedScene" uid="uid://xqimcf20s2jp" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_fullglove_low.tscn" id="2_n1flv"]
+
+[node name="Player" type="Node3D" unique_id=1327736057]
+script = ExtResource("1_uhx6q")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=1723617940]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="XROrigin3D" unique_id=965972592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0763018, 0)
+disable_mode = 2
+
+[node name="XRToolsPlayerBody" type="CharacterBody3D" parent="XROrigin3D/CharacterBody3D" unique_id=883573793]
+script = ExtResource("1_n1flv")
+metadata/_custom_type_script = "uid://ck4yn3hxuobj7"
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=1660775213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1706233787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1, 0)
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="LeftHand" parent="XROrigin3D/LeftController" unique_id=1236173724 instance=ExtResource("1_g17ji")]
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D" unique_id=252313859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1, 0)
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="RightHand" parent="XROrigin3D/RightController" unique_id=499649034 instance=ExtResource("2_n1flv")]

@@ -8,6 +8,20 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
 albedo_texture = ExtResource("2_r3fl7")
 
+[sub_resource type="Environment" id="Environment_noarx"]
+background_mode = 2
+sky = ExtResource("4_r3fl7")
+ambient_light_sky_contribution = 0.22
+glow_intensity = 0.1
+glow_bloom = 1.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+volumetric_fog_albedo = Color(0.8526276, 0.5516884, 0.2805634, 1)
+volumetric_fog_emission = Color(0.112561814, 0.03581224, 0.0049137464, 1)
+volumetric_fog_detail_spread = 0.5
+adjustment_enabled = true
+adjustment_saturation = 1.83
+
 [sub_resource type="Shader" id="Shader_noarx"]
 code = "shader_type spatial;
 render_mode unshaded, depth_draw_never;
@@ -96,20 +110,6 @@ material = SubResource("ShaderMaterial_r3fl7")
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="Environment" id="Environment_noarx"]
-background_mode = 2
-sky = ExtResource("4_r3fl7")
-ambient_light_sky_contribution = 0.22
-glow_intensity = 0.1
-glow_bloom = 1.0
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.0
-volumetric_fog_albedo = Color(0.8526276, 0.5516884, 0.2805634, 1)
-volumetric_fog_emission = Color(0.112561814, 0.03581224, 0.0049137464, 1)
-volumetric_fog_detail_spread = 0.5
-adjustment_enabled = true
-adjustment_saturation = 1.83
-
 [node name="Life On Mars" type="Node3D" unique_id=1023627608]
 
 [node name="World" type="Node" parent="." unique_id=355444867]
@@ -124,17 +124,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
 [node name="PlayerOrigin" parent="." unique_id=370237807 instance=ExtResource("1_r3fl7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0525377, 0)
 
-[node name="Find Edges Shader" type="MeshInstance3D" parent="." unique_id=1674412334]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
-extra_cull_margin = 16384.0
-mesh = SubResource("QuadMesh_jka67")
+[node name="Environment & Shaders" type="Node" parent="." unique_id=41524546]
 
-[node name="Sun & Environment" type="Node" parent="." unique_id=41524546]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Sun & Environment" unique_id=435177951]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment & Shaders" unique_id=435177951]
 environment = SubResource("Environment_noarx")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sun & Environment" unique_id=1734107265]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment & Shaders" unique_id=1734107265]
 transform = Transform3D(-0.2945076, 0.91542965, 0.27432486, -0.9322228, -0.33836672, 0.12833023, 0.2102997, -0.21793762, 0.95303583, 0, 0, 0)
 light_color = Color(0.89494604, 0.6802879, 0.5851749, 1)
 light_energy = 0.366
+
+[node name="Find Edges Shader" type="MeshInstance3D" parent="Environment & Shaders" unique_id=1674412334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_jka67")
+skeleton = NodePath("../..")

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://csna4uqamryda"
-path="res://.godot/imported/Habitat1.blend-e40b02166ed187833169af6205dc5e5d.scn"
+uid="uid://l8k7lmg3qkdk"
+path="res://.godot/imported/Crate.blend-118f179bd73158cc98822b88fba7ef51.scn"
 
 [deps]
 
-source_file="res://Models/Habitat1.blend"
-dest_files=["res://.godot/imported/Habitat1.blend-e40b02166ed187833169af6205dc5e5d.scn"]
+source_file="res://Models/Crate.blend"
+dest_files=["res://.godot/imported/Crate.blend-118f179bd73158cc98822b88fba7ef51.scn"]
 
 [params]
 

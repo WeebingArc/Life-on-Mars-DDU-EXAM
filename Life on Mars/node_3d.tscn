@@ -2,10 +2,16 @@
 
 [ext_resource type="ArrayMesh" uid="uid://0jiedjcrkfkh" path="res://Models/terrain.obj" id="1_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_wc5p8"]
 [ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://cye64ucggshag" path="res://Models/HabitatCorner.blend" id="3_i5arm"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://b2ponam5xlj08" path="res://Models/HabitatHallway.blend" id="4_wc5p8"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_i5arm"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wc5p8"]
+points = PackedVector3Array(1.0158731, 0.015873017, 1.0158731, -1.0158731, -0.015873017, -1.0158731, -1.0158731, 0.015873017, -1.0158731, 1.0158731, -0.015873017, -1.0158731, -1.0158731, -0.015873017, 1.0158731, -1.0158731, 0.015873017, 1.0158731, 1.0158731, 0.015873017, -1.0158731, 1.0158731, -0.015873017, 1.0158731)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
 albedo_texture = ExtResource("2_r3fl7")
@@ -118,26 +124,34 @@ material = SubResource("ShaderMaterial_r3fl7")
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_i5arm"]
-size = Vector3(43.584717, 1, 37.709473)
-
 [node name="Life On Mars" type="Node3D" unique_id=1023627608]
+
+[node name="StartXR" parent="." unique_id=433326898 instance=ExtResource("1_wc5p8")]
 
 [node name="World" type="Node" parent="." unique_id=355444867]
 
 [node name="Mars Base" type="Node" parent="World" unique_id=950307457]
+
+[node name="HabitatHallway" parent="World/Mars Base" unique_id=1566238722 instance=ExtResource("4_wc5p8")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.2063, 8.233256, -189.08414)
+
+[node name="HabitatCorner" parent="World/Mars Base" unique_id=116163171 instance=ExtResource("3_i5arm")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.17816, 6.73053, -198.6106)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Mars Base/HabitatCorner" unique_id=2001700493]
+transform = Transform3D(21.3055, 0, 0, 0, 1, 0, 0, 0, 23.148485, 0, 0, 0)
+mesh = SubResource("PlaneMesh_i5arm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCorner/MeshInstance3D" unique_id=1628415631]
+shape = SubResource("ConvexPolygonShape3D_wc5p8")
 
 [node name="Terrain" type="MeshInstance3D" parent="World" unique_id=762353242]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -63.185127, -3.9259186, -28.558033)
 mesh = ExtResource("1_a0tk4")
 surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
 
-[node name="FogVolume" type="FogVolume" parent="World/Terrain" unique_id=954549705]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160.06726, 12.266957, 397.72516)
-size = Vector3(9.317139, 2, 1.3671875)
-
 [node name="PlayerOrigin" parent="." unique_id=370237807 instance=ExtResource("1_r3fl7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 335.718, 6.9360337, -198.78989)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 335.718, 8.030583, -198.78989)
 
 [node name="Environment & Shaders" type="Node" parent="." unique_id=41524546]
 
@@ -154,14 +168,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_jka67")
 skeleton = NodePath("../..")
-
-[node name="HabitatCorner" parent="." unique_id=116163171 instance=ExtResource("3_i5arm")]
-transform = Transform3D(-1.0927847e-08, 0, -0.25, 0, 0.25, 0, 0.25, 0, -1.0927847e-08, 339.17816, 6.73053, -198.6106)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HabitatCorner" unique_id=1900165696]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.029067993, -0.40002632, 2.911621)
-shape = SubResource("BoxShape3D_i5arm")
-debug_color = Color(0.7060442, 0.48812258, 0.06634297, 0.41960785)
-
-[node name="HabitatHallway" parent="." unique_id=1566238722 instance=ExtResource("4_wc5p8")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.2063, 8.233256, -188.7379)

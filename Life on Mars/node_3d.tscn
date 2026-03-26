@@ -3,7 +3,9 @@
 [ext_resource type="ArrayMesh" uid="uid://0jiedjcrkfkh" path="res://Models/terrain.obj" id="1_a0tk4"]
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_r3fl7"]
 [ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://cye64ucggshag" path="res://Models/HabitatCorner.blend" id="3_i5arm"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://b2ponam5xlj08" path="res://Models/HabitatHallway.blend" id="4_wc5p8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
 albedo_texture = ExtResource("2_r3fl7")
@@ -12,13 +14,19 @@ albedo_texture = ExtResource("2_r3fl7")
 background_mode = 2
 sky = ExtResource("4_r3fl7")
 ambient_light_sky_contribution = 0.22
+glow_enabled = true
 glow_intensity = 0.1
 glow_bloom = 1.0
+fog_mode = 1
+fog_density = 0.0
+fog_sky_affect = 0.0
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
-volumetric_fog_albedo = Color(0.8526276, 0.5516884, 0.2805634, 1)
-volumetric_fog_emission = Color(0.112561814, 0.03581224, 0.0049137464, 1)
-volumetric_fog_detail_spread = 0.5
+volumetric_fog_albedo = Color(17.823963, 11.844812, 8.310663, 1)
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_gi_inject = 0.0
+volumetric_fog_length = 158.36
+volumetric_fog_ambient_inject = 1.49
 adjustment_enabled = true
 adjustment_saturation = 1.83
 
@@ -110,6 +118,9 @@ material = SubResource("ShaderMaterial_r3fl7")
 flip_faces = true
 size = Vector2(2, 2)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_i5arm"]
+size = Vector3(43.584717, 1, 37.709473)
+
 [node name="Life On Mars" type="Node3D" unique_id=1023627608]
 
 [node name="World" type="Node" parent="." unique_id=355444867]
@@ -121,8 +132,12 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -63.
 mesh = ExtResource("1_a0tk4")
 surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
 
+[node name="FogVolume" type="FogVolume" parent="World/Terrain" unique_id=954549705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160.06726, 12.266957, 397.72516)
+size = Vector3(9.317139, 2, 1.3671875)
+
 [node name="PlayerOrigin" parent="." unique_id=370237807 instance=ExtResource("1_r3fl7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0525377, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 335.718, 6.9360337, -198.78989)
 
 [node name="Environment & Shaders" type="Node" parent="." unique_id=41524546]
 
@@ -139,3 +154,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_jka67")
 skeleton = NodePath("../..")
+
+[node name="HabitatCorner" parent="." unique_id=116163171 instance=ExtResource("3_i5arm")]
+transform = Transform3D(-1.0927847e-08, 0, -0.25, 0, 0.25, 0, 0.25, 0, -1.0927847e-08, 339.17816, 6.73053, -198.6106)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HabitatCorner" unique_id=1900165696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.029067993, -0.40002632, 2.911621)
+shape = SubResource("BoxShape3D_i5arm")
+debug_color = Color(0.7060442, 0.48812258, 0.06634297, 0.41960785)
+
+[node name="HabitatHallway" parent="." unique_id=1566238722 instance=ExtResource("4_wc5p8")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.2063, 8.233256, -188.7379)

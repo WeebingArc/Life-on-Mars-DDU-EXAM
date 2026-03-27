@@ -4,9 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_wc5p8"]
 [ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
-[ext_resource type="PackedScene" uid="uid://cye64ucggshag" path="res://Models/HabitatCorner.blend" id="3_i5arm"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
-[ext_resource type="PackedScene" uid="uid://b2ponam5xlj08" path="res://Models/HabitatHallway.blend" id="4_wc5p8"]
 
 [sub_resource type="Environment" id="Environment_noarx"]
 background_mode = 2
@@ -145,13 +143,6 @@ skeleton = NodePath("../..")
 [node name="World" type="Node" parent="." unique_id=355444867]
 
 [node name="Mars Base" type="Node" parent="World" unique_id=950307457]
-
-[node name="HabitatHallway" parent="World/Mars Base" unique_id=1566238722 instance=ExtResource("4_wc5p8")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.2063, 8.233256, -189.08414)
-
-[node name="HabitatCorner" parent="World/Mars Base" unique_id=116163171 instance=ExtResource("3_i5arm")]
-physics_interpolation_mode = 2
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 339.17816, 6.73053, -198.6106)
 
 [node name="Terrain" type="MeshInstance3D" parent="World" unique_id=762353242]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -63.185127, -3.9259186, -28.558033)

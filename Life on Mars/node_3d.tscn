@@ -4,25 +4,33 @@
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_wc5p8"]
 [ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://cye64ucggshag" path="res://Models/HabitatCorner.blend" id="3_i5arm"]
+[ext_resource type="PackedScene" uid="uid://cksyrne3bexf7" path="res://Models/Spebshorp.blend" id="4_4arys"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
+[ext_resource type="PackedScene" uid="uid://b2ponam5xlj08" path="res://Models/HabitatHallway.blend" id="4_wc5p8"]
+[ext_resource type="PackedScene" uid="uid://s2icm00v61fj" path="res://Models/BARREL!!.blend" id="6_jsk3o"]
 
 [sub_resource type="Environment" id="Environment_noarx"]
 background_mode = 2
 sky = ExtResource("4_r3fl7")
-ambient_light_sky_contribution = 0.22
+ambient_light_source = 1
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = false
 glow_enabled = true
-glow_intensity = 0.1
 glow_bloom = 1.0
+glow_blend_mode = 0
+fog_enabled = true
 fog_mode = 1
-fog_density = 0.0
+fog_light_color = Color(0.52, 0.31798, 0.1924, 1)
+fog_sun_scatter = 0.2
+fog_density = 0.4018
 fog_sky_affect = 0.0
+fog_depth_curve = 0.9999988
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0
-volumetric_fog_albedo = Color(17.823963, 11.844812, 8.310663, 1)
-volumetric_fog_emission_energy = 0.0
-volumetric_fog_gi_inject = 0.0
-volumetric_fog_length = 158.36
-volumetric_fog_ambient_inject = 1.49
+volumetric_fog_length = 5.0
+volumetric_fog_detail_spread = 0.57434916
 adjustment_enabled = true
 adjustment_saturation = 1.83
 
@@ -114,13 +122,35 @@ material = SubResource("ShaderMaterial_r3fl7")
 flip_faces = true
 size = Vector2(2, 2)
 
+[sub_resource type="BoxMesh" id="BoxMesh_6iypd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tereu"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jsk3o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wc5p8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jsk3o"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4arys"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6iypd"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wc5p8"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jsk3o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4arys"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4arys"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
 albedo_texture = ExtResource("2_r3fl7")
 
 [node name="Life On Mars" type="Node3D" unique_id=1023627608]
 
-[node name="PlayerOrigin" parent="." unique_id=370237807 instance=ExtResource("1_r3fl7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 335.718, 8.030583, -198.78989)
+[node name="XROrigin3D" parent="." unique_id=1846510992 instance=ExtResource("1_r3fl7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.879444, 1.6320186, -0.060621083)
 
 [node name="StartXR" parent="." unique_id=433326898 instance=ExtResource("1_wc5p8")]
 
@@ -144,9 +174,562 @@ skeleton = NodePath("../..")
 
 [node name="Mars Base" type="Node" parent="World" unique_id=950307457]
 
+[node name="Spebshorp" parent="World/Mars Base" unique_id=584295205 instance=ExtResource("4_4arys")]
+transform = Transform3D(-0.13, 0, -1.9629454e-08, 0, 0.09736898, 0, 1.9629454e-08, 0, -0.13, 8.898853, 0.5095272, -0.12756872)
+
+[node name="Floor" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1317580968]
+transform = Transform3D(83.22512, 0, 0, 0, -2.0088053, 0, 6.366463e-12, 0, 38.445362, -11.3797455, -3.825795, -1.7285347e-06)
+visible = false
+mesh = SubResource("BoxMesh_6iypd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/Spebshorp/Floor" unique_id=126069748]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/Floor/StaticBody3D" unique_id=634085344]
+shape = SubResource("BoxShape3D_tereu")
+
+[node name="Wall" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1221296203]
+transform = Transform3D(83.22512, 3.0332103e-07, 5.805088e-06, 1.25666365e-05, 8.780766e-08, -38.445362, 1.2566645e-05, -2.008805, -1.6804987e-06, -11.379761, 11.250864, 13.37727)
+visible = false
+mesh = SubResource("BoxMesh_6iypd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/Spebshorp/Wall" unique_id=825682149]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/Wall/StaticBody3D" unique_id=708675066]
+shape = SubResource("BoxShape3D_tereu")
+
+[node name="Wall2" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=2077755723]
+transform = Transform3D(83.22512, 3.0332097e-07, 5.805088e-06, 1.25666365e-05, 8.780766e-08, -38.445362, 1.2566647e-05, -2.008805, -1.6804985e-06, -11.379768, 11.250864, -14.563057)
+visible = false
+mesh = SubResource("BoxMesh_6iypd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/Spebshorp/Wall2" unique_id=178691188]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/Wall2/StaticBody3D" unique_id=18708315]
+shape = SubResource("BoxShape3D_tereu")
+
+[node name="PUTER" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1263287922]
+transform = Transform3D(3.0927541, -5.0072255, -5.504817e-07, 6.5732587e-07, 3.1100762e-07, 7.194725, -3.0636342, -5.054819, 9.879673e-07, -29.701225, 1.4721465, 7.2565875)
+visible = false
+mesh = SubResource("BoxMesh_6iypd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/Spebshorp/PUTER" unique_id=2060497070]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/PUTER/StaticBody3D" unique_id=1196204677]
+shape = SubResource("BoxShape3D_tereu")
+
+[node name="PUTER2" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=739368805]
+transform = Transform3D(3.594398, 6.1938233, -1.1037864e-06, 5.794977e-07, 7.724742e-07, 7.042242, 1.3451064, -16.551155, -8.438805e-08, -29.912949, 1.6725812, -3.911731)
+visible = false
+mesh = SubResource("BoxMesh_6iypd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/Spebshorp/PUTER2" unique_id=883900751]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/PUTER2/StaticBody3D" unique_id=1197910665]
+shape = SubResource("BoxShape3D_tereu")
+
+[node name="light6" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1332544490]
+transform = Transform3D(0.4933626, -1.2860305, 0.18974781, 0.07304382, -0.45091084, -2.2347143, 1.9054636, 0.494397, 0.25671092, 27.474098, 22.561403, -12.550501)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light6" unique_id=1659999951]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light6" unique_id=1423190875]
+transform = Transform3D(3.8434188, -0.58591044, -0.75985795, 0.38260108, -1.4579893, 5.3261447, 0.1639775, 4.6117125, 0.41734964, -0.1330862, 2.0927525, 0.062316895)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.31572795
+spot_angle = 35.15625
+
+[node name="light7" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1032537826]
+transform = Transform3D(-0.44774923, -1.3685573, 0.048864152, 0.07304381, -0.45091107, -2.2347143, 1.9166944, -0.15922917, 0.31546307, 27.47408, 22.95046, 11.914584)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light7" unique_id=1638433756]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light7" unique_id=1352707166]
+transform = Transform3D(3.8434188, -0.58591044, -0.75985795, 0.38260108, -1.4579893, 5.3261447, 0.1639775, 4.6117125, 0.41734964, -0.1330862, 2.0927525, 0.062316895)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.31572795
+spot_angle = 35.15625
+
+[node name="light8" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=756533687]
+transform = Transform3D(0.036399487, -0.04328693, -2.1802576, -0.15005739, -1.4487425, -0.5451719, -1.9635912, -0.029956156, -0.2124114, -19.470856, 21.705633, 5.108564)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light8" unique_id=1728646767]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 2.584
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light8" unique_id=2107498393]
+transform = Transform3D(3.9050074, -0.49300408, -0.2992213, 0.3887322, -1.1238357, 7.136312, 0.16660514, 3.5393534, -0.23887876, -0.09253597, 2.5372257, -0.064445496)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.32108694
+spot_angle = 35.15625
+
+[node name="light9" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=619987575]
+transform = Transform3D(0.036399487, -0.04328693, -2.1802576, -0.15005739, -1.4487425, -0.5451719, -1.9635912, -0.029956156, -0.2124114, -19.667015, 21.705633, -5.1680365)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light9" unique_id=1477879020]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 2.584
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light9" unique_id=1741963896]
+transform = Transform3D(3.9050074, -0.49300408, -0.2992213, 0.3887322, -1.1238357, 7.136312, 0.16660514, 3.5393534, -0.23887876, -0.09253597, 2.5372257, -0.064445496)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.32108694
+spot_angle = 35.15625
+
+[node name="HabitatHallway" parent="World/Mars Base" unique_id=1566238722 instance=ExtResource("4_wc5p8")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 1.4688721, 9.622505)
+
+[node name="Floor Collison" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=1116366093]
+transform = Transform3D(9.488433, 0, 0, 0, 0.41399348, 0, 0, 0, -38.851616, 0, -5.525118, 0)
+visible = false
+mesh = SubResource("BoxMesh_wc5p8")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatHallway/Floor Collison" unique_id=563822600]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatHallway/Floor Collison/StaticBody3D" unique_id=1433838318]
+shape = SubResource("BoxShape3D_jsk3o")
+
+[node name="Wall1" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=1233170306]
+transform = Transform3D(-4.1475258e-07, -0.41399348, 0, 9.488433, -1.809623e-08, 0, 0, 0, -38.851612, -4.5826316, -0.33393097, 0)
+visible = false
+mesh = SubResource("BoxMesh_wc5p8")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatHallway/Wall1" unique_id=269601715]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatHallway/Wall1/StaticBody3D" unique_id=1011062728]
+shape = SubResource("BoxShape3D_jsk3o")
+
+[node name="Wall2" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=429789203]
+transform = Transform3D(-4.1475258e-07, -0.41399348, 0, 9.488433, -1.809623e-08, 0, 0, 0, -38.851612, 4.2966275, -0.33393097, 0)
+visible = false
+mesh = SubResource("BoxMesh_wc5p8")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatHallway/Wall2" unique_id=1911119408]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatHallway/Wall2/StaticBody3D" unique_id=1770153704]
+shape = SubResource("BoxShape3D_jsk3o")
+
+[node name="HabitatCornerStart" parent="World/Mars Base" unique_id=116163171 instance=ExtResource("3_i5arm")]
+physics_interpolation_mode = 2
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[node name="BARREL!!" parent="World/Mars Base/HabitatCornerStart" unique_id=145062573 instance=ExtResource("6_jsk3o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.616188, 1.9441297, -17.049858)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart/BARREL!!" unique_id=929755444]
+transform = Transform3D(2.3357897, 0, 0, 0, 2.1626995, 0, 0, 0, 2.4361255, 0, 0.72002316, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_4arys")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/BARREL!!/MeshInstance3D" unique_id=1186355364]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/BARREL!!/MeshInstance3D/StaticBody3D" unique_id=1009921529]
+shape = SubResource("CapsuleShape3D_6iypd")
+
+[node name="light" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=969161786]
+transform = Transform3D(1, 0, 0, 0, -0.70710677, 0.70710677, 0, -0.70710677, -0.70710677, 0, 17.828453, -3.0291803)
+mesh = SubResource("CylinderMesh_jsk3o")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light" unique_id=228403702]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light" unique_id=1282532480]
+transform = Transform3D(3.9767447, -0.0477489, -0.42804527, 0.39587408, -1.1607801, 3.807345, 0.16966575, 3.8275728, 1.1493055, 0, 1.6831589, 0.275465)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.504
+
+[node name="light3" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1821914541]
+transform = Transform3D(-4.371139e-08, -0.70710677, -0.70710677, 0, -0.70710677, 0.70710677, -1, 3.090862e-08, 3.090862e-08, -2.7336655, 17.828453, -0.14983702)
+mesh = SubResource("CylinderMesh_jsk3o")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light3" unique_id=2026187960]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light3" unique_id=1453205063]
+transform = Transform3D(3.9767447, -0.0477489, -0.42804527, 0.39587408, -1.1607801, 3.807345, 0.16966575, 3.8275728, 1.1493055, 0, 1.6831589, 0.275465)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.504
+
+[node name="light4" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1500525853]
+transform = Transform3D(-4.371139e-08, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 1, 3.090862e-08, 3.090862e-08, 2.7677355, 17.828453, -0.14983702)
+mesh = SubResource("CylinderMesh_jsk3o")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light4" unique_id=150915444]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light4" unique_id=1331500883]
+transform = Transform3D(3.9767447, -0.0477489, -0.42804527, 0.39587408, -1.1607801, 3.807345, 0.16966575, 3.8275728, 1.1493055, 0, 1.6831589, 0.275465)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.504
+
+[node name="light2" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1030478686]
+transform = Transform3D(0.9769338, -0.122522384, -0.1748963, -0.20996721, -0.70038867, -0.6821799, -0.038913082, 0.703167, -0.7099591, 0, 17.828453, 2.8834703)
+mesh = SubResource("CylinderMesh_jsk3o")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light2" unique_id=163116791]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatCornerStart/light2" unique_id=432852927]
+transform = Transform3D(3.9767447, -0.0477489, -0.42804527, 0.39587408, -1.1607801, 3.807345, 0.16966575, 3.8275728, 1.1493055, 0, 1.6831589, 0.275465)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.504
+
+[node name="Floor Collison" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=338060085]
+transform = Transform3D(43.2647, 0, 0, 0, 0.41399348, 0, 0, 0, -45.465015, 0, 0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_wc5p8")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/Floor Collison" unique_id=373804176]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/Floor Collison/StaticBody3D" unique_id=429385742]
+shape = SubResource("CylinderShape3D_jsk3o")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1224691752]
+transform = Transform3D(-3.8896706, 0, -0.07897974, 0, 10.344819, 0, -0.27608573, 0, 1.1127167, 2.2920399, 5.991868, -21.339437)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D2" unique_id=1969274950]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D2/StaticBody3D" unique_id=238068094]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=398606340]
+transform = Transform3D(-3.733203, 0, -0.3222519, 0, 10.344819, 0, -1.1264806, 0, 1.067956, 6.374193, 5.991868, -20.558187)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D4" unique_id=621399770]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D4/StaticBody3D" unique_id=1472971893]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1466758451]
+transform = Transform3D(-3.371434, 0, -0.560521, 0, 10.344819, 0, -1.9593866, 0, 0.96446484, 10.243944, 5.991868, -18.992025)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D5" unique_id=729325399]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D5/StaticBody3D" unique_id=505018847]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1904232356]
+transform = Transform3D(-3.1964328, 0, -0.63894033, 0, 10.344821, 0, -2.2335138, 0, 0.91440237, 13.667772, 5.991868, -16.618246)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D6" unique_id=1700467074]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D6/StaticBody3D" unique_id=129051446]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=2056177388]
+transform = Transform3D(-2.273006, 0, -0.90640324, 0, 10.344822, 0, -3.1684713, 0, 0.6502381, 16.630663, 5.991868, -13.548056)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D7" unique_id=314958445]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D7/StaticBody3D" unique_id=1608796083]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1374601090]
+transform = Transform3D(-2.0658205, 0, -0.9461146, 0, 10.344824, 0, -3.3072884, 0, 0.5909686, 18.907396, 5.991868, -10.03652)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D8" unique_id=66400926]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D8/StaticBody3D" unique_id=1244019926]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1220260771]
+transform = Transform3D(-0.7627488, 0, -1.0939682, 0, 10.344825, 0, -3.8241324, 0, 0.2181994, 20.591845, 5.991868, -6.1903896)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D9" unique_id=329958526]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D9/StaticBody3D" unique_id=1612577096]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1699430277]
+transform = Transform3D(-3.8878489, 0, 0.08600842, 0, 10.344819, 0, 0.30065542, 0, 1.1121954, -1.9867687, 5.991868, -21.409262)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D3" unique_id=74597490]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D3/StaticBody3D" unique_id=1816580910]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=897184713]
+transform = Transform3D(-1.0923572, 0, 1.0708534, 0, 10.344818, 0, 3.7433302, 0, 0.3124902, -20.7065, 5.65329, -6.3663883)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D10" unique_id=997893141]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D10/StaticBody3D" unique_id=844544961]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=116462]
+transform = Transform3D(-1.8904347, 0, 0.9756618, 0, 10.344819, 0, 3.4105754, 0, 0.5407959, -19.079723, 5.65329, -10.190906)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D11" unique_id=166165597]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D11/StaticBody3D" unique_id=1237233068]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1846261913]
+transform = Transform3D(-2.6280053, 0, 0.82412636, 0, 10.344822, 0, 2.8808599, 0, 0.75179267, -16.730392, 5.65329, -13.643278)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D12" unique_id=1954092869]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D12/StaticBody3D" unique_id=1417628880]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1505455814]
+transform = Transform3D(-2.8589277, 0, 0.7586134, 0, 10.344822, 0, 2.6518488, 0, 0.8178524, -13.686286, 5.65329, -16.487719)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D13" unique_id=1510669170]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D13/StaticBody3D" unique_id=742425818]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1183949039]
+transform = Transform3D(-3.5774739, 0, 0.44386476, 0, 10.344823, 0, 1.5515964, 0, 1.0234065, -10.058988, 5.65329, -18.73438)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D14" unique_id=1151751668]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D14/StaticBody3D" unique_id=973762408]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1837151139]
+transform = Transform3D(-3.6693394, 0, 0.37753806, 0, 10.344826, 0, 1.3197417, 0, 1.0496866, -6.145763, 5.65329, -20.215776)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D15" unique_id=269871589]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D15/StaticBody3D" unique_id=763858246]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1746962937]
+transform = Transform3D(-3.8989468, 0, -0.018066749, 0, 10.344825, 0, -0.06315541, 0, 1.1153704, -2.030119, 5.65329, -21.049887)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D16" unique_id=292839951]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D16/StaticBody3D" unique_id=684775807]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1224512246]
+transform = Transform3D(-0.52827287, 0, 1.1052325, 0, 10.34482, 0, 3.863509, 0, 0.15112278, -21.679237, 5.65329, -2.2005358)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D17" unique_id=1130681119]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D17/StaticBody3D" unique_id=1384788779]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1390576653]
+transform = Transform3D(1.7738932, 0, -0.9934103, 0, 10.344819, 0, -3.4726164, 0, -0.5074571, 18.551327, 6.048442, 10.01564)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D18" unique_id=221714245]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D18/StaticBody3D" unique_id=1151546156]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1572052699]
+transform = Transform3D(2.4955573, 0, -0.85715723, 0, 10.344819, 0, -2.996324, 0, -0.7139031, 16.23724, 6.048442, 13.468033)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D19" unique_id=216266414]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D19/StaticBody3D" unique_id=1498176736]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=685907694]
+transform = Transform3D(3.1209092, 0, -0.6687974, 0, 10.34482, 0, -2.3378825, 0, -0.8927973, 13.2835045, 6.048442, 16.41829)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D20" unique_id=1779824576]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D20/StaticBody3D" unique_id=1578546621]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1155772631]
+transform = Transform3D(3.3048706, 0, -0.59207463, 0, 10.344822, 0, -2.0696864, 0, -0.9454229, 9.760677, 6.048442, 18.642471)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D21" unique_id=1295730314]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D21/StaticBody3D" unique_id=1834855516]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1749404209]
+transform = Transform3D(1.2422848, 0, -1.0573939, 0, 10.34482, 0, -3.6962817, 0, -0.35537988, 20.287289, 6.048442, 6.1042023)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D22" unique_id=573775215]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D22/StaticBody3D" unique_id=318204123]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1602117740]
+transform = Transform3D(3.034127, 0, 0.7007151, 0, 10.344818, 0, 2.4494562, 0, -0.8679718, -13.998864, 6.2361917, 16.55896)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D23" unique_id=575006844]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D23/StaticBody3D" unique_id=121700976]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=638499946]
+transform = Transform3D(2.4197383, 0, 0.87476677, 0, 10.34482, 0, 3.0578809, 0, -0.6922134, -16.902184, 6.2361917, 13.584961)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D24" unique_id=376491344]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D24/StaticBody3D" unique_id=948121148]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=573250564]
+transform = Transform3D(1.6468714, 0, 1.0111494, 0, 10.344821, 0, 3.5346265, 0, -0.47111994, -19.182823, 6.2361917, 10.088196)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D25" unique_id=158403233]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D25/StaticBody3D" unique_id=1740821867]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=1478431843]
+transform = Transform3D(1.3466033, 0, 1.0468909, 0, 10.344821, 0, 3.6595669, 0, -0.38522243, -20.635826, 6.2361917, 6.1835938)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D26" unique_id=1941020565]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D26/StaticBody3D" unique_id=1145542231]
+shape = SubResource("BoxShape3D_4arys")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="World/Mars Base/HabitatCornerStart" unique_id=942882293]
+transform = Transform3D(3.3622327, 0, 0.5650264, 0, 10.34482, 0, 1.9751358, 0, -0.9618329, -10.527551, 6.2361917, 19.061462)
+visible = false
+mesh = SubResource("BoxMesh_4arys")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D27" unique_id=1355657543]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatCornerStart/MeshInstance3D27/StaticBody3D" unique_id=1663158279]
+shape = SubResource("BoxShape3D_4arys")
+
 [node name="Terrain" type="MeshInstance3D" parent="World" unique_id=762353242]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -63.185127, -3.9259186, -28.558033)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -330.00995, -11.690842, 110.54997)
 mesh = ExtResource("1_a0tk4")
 surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
-
-[node name="Collision" type="Node" parent="." unique_id=1177442439]

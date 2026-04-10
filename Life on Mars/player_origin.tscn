@@ -18,9 +18,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6604221, -0.0033195019)
 tracker = &"left_hand"
 
 [node name="LeftPhysicsHand" parent="LeftHand" unique_id=1590065755 instance=ExtResource("1_seboi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50822616, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0016605854, 0, 0)
 
-[node name="MovementTurn" parent="LeftHand/LeftPhysicsHand" unique_id=603122743 instance=ExtResource("6_n4ba1")]
+[node name="MovementDirect" parent="LeftHand/LeftPhysicsHand" unique_id=2131288457 instance=ExtResource("3_seboi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0.05)
+strafe = true
 
 [node name="XRToolsFunctionPickup" type="Node3D" parent="LeftHand/LeftPhysicsHand" unique_id=1331420783]
 script = ExtResource("4_pn0p4")
@@ -30,9 +32,11 @@ metadata/_custom_type_script = "uid://b18kkstg643yw"
 tracker = &"right_hand"
 
 [node name="RightPhysicsHand" parent="RightHand" unique_id=2022382277 instance=ExtResource("4_n4ba1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49584973, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0011566877, 0, 0)
 
-[node name="MovementDirect" parent="RightHand/RightPhysicsHand" unique_id=2131288457 instance=ExtResource("3_seboi")]
+[node name="MovementTurn" parent="RightHand/RightPhysicsHand" unique_id=603122743 instance=ExtResource("6_n4ba1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0.05)
+turn_mode = 2
 
 [node name="XRToolsFunctionPickup" type="Node3D" parent="RightHand/RightPhysicsHand" unique_id=1330182316]
 script = ExtResource("4_pn0p4")

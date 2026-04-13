@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://cksyrne3bexf7" path="res://Models/Spebshorp.blend" id="4_4arys"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
 [ext_resource type="PackedScene" uid="uid://b2ponam5xlj08" path="res://Models/HabitatHallway.blend" id="4_wc5p8"]
+[ext_resource type="Script" uid="uid://1msbttjvhn6y" path="res://Scripts/pivot.gd" id="5_tereu"]
+[ext_resource type="PackedScene" uid="uid://bmp5ddfhsx1al" path="res://Models/crankin _t_straight_up_frfr.blend" id="6_cdqbm"]
 [ext_resource type="PackedScene" uid="uid://s2icm00v61fj" path="res://Models/BARREL!!.blend" id="6_jsk3o"]
+[ext_resource type="Script" uid="uid://c8gx2wc7hsxf5" path="res://addons/godot-xr-tools/interactables/interactable_hinge.gd" id="7_cdqbm"]
+[ext_resource type="PackedScene" uid="uid://baxepasx3ns64" path="res://Models/PowerPlant.blend" id="14_wlxy5"]
 
 [sub_resource type="Environment" id="Environment_noarx"]
 background_mode = 2
@@ -128,6 +132,23 @@ size = Vector2(2, 2)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_jsk3o"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_cdqbm"]
+size = Vector3(1.2529297, 1.3257446, 1.4909592)
+
+[sub_resource type="GDScript" id="GDScript_imku0"]
+script/source = "extends CollisionShape3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
 [sub_resource type="BoxMesh" id="BoxMesh_wc5p8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jsk3o"]
@@ -175,7 +196,7 @@ skeleton = NodePath("../..")
 [node name="Mars Base" type="Node" parent="World" unique_id=950307457]
 
 [node name="Spebshorp" parent="World/Mars Base" unique_id=584295205 instance=ExtResource("4_4arys")]
-transform = Transform3D(-0.13, 0, -1.9629454e-08, 0, 0.09736898, 0, 1.9629454e-08, 0, -0.13, 8.898853, 0.5095272, -0.12756872)
+transform = Transform3D(-0.13, 0, -1.9629454e-08, 0, 0.09736898, 0, 1.9629454e-08, 0, -0.13, 8.898853, 0.34389222, -0.12756872)
 
 [node name="Floor" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=1317580968]
 transform = Transform3D(83.22512, 0, 0, 0, -2.0088053, 0, 6.366463e-12, 0, 38.445362, -11.3797455, -3.825795, -1.7285347e-06)
@@ -267,28 +288,8 @@ light_specular = 0.0
 spot_range = 0.31572795
 spot_angle = 35.15625
 
-[node name="light8" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=756533687]
-transform = Transform3D(0.036399487, -0.04328693, -2.1802576, -0.15005739, -1.4487425, -0.5451719, -1.9635912, -0.029956156, -0.2124114, -19.470856, 21.705633, 5.108564)
-mesh = SubResource("CylinderMesh_jsk3o")
-skeleton = NodePath("../../HabitatCornerStart")
-
-[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light8" unique_id=1728646767]
-transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
-light_energy = 2.108
-light_indirect_energy = 0.0
-light_specular = 0.0
-spot_range = 2.584
-
-[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light8" unique_id=2107498393]
-transform = Transform3D(3.9050074, -0.49300408, -0.2992213, 0.3887322, -1.1238357, 7.136312, 0.16660514, 3.5393534, -0.23887876, -0.09253597, 2.5372257, -0.064445496)
-light_energy = 2.108
-light_indirect_energy = 0.0
-light_specular = 0.0
-spot_range = 0.32108694
-spot_angle = 35.15625
-
 [node name="light9" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=619987575]
-transform = Transform3D(0.036399487, -0.04328693, -2.1802576, -0.15005739, -1.4487425, -0.5451719, -1.9635912, -0.029956156, -0.2124114, -19.667015, 21.705633, -5.1680365)
+transform = Transform3D(-0.038340118, -0.7186271, -2.180882, -0.14957319, -1.2586913, 0.5426677, -1.9635907, -0.029956235, -0.2124114, -19.667015, 23.306763, -5.1680365)
 mesh = SubResource("CylinderMesh_jsk3o")
 skeleton = NodePath("../../HabitatCornerStart")
 
@@ -300,15 +301,60 @@ light_specular = 0.0
 spot_range = 2.584
 
 [node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light9" unique_id=1741963896]
-transform = Transform3D(3.9050074, -0.49300408, -0.2992213, 0.3887322, -1.1238357, 7.136312, 0.16660514, 3.5393534, -0.23887876, -0.09253597, 2.5372257, -0.064445496)
+transform = Transform3D(3.855874, -0.62721276, -0.47035405, 0.38384104, -1.1870481, 7.1640534, 0.16450891, 3.6987762, -1.1504967, -0.07364607, 2.4517117, -0.227005)
 light_energy = 2.108
 light_indirect_energy = 0.0
 light_specular = 0.0
 spot_range = 0.32108694
 spot_angle = 35.15625
 
+[node name="light10" type="MeshInstance3D" parent="World/Mars Base/Spebshorp" unique_id=616110107]
+transform = Transform3D(-0.038340114, -0.7186271, -2.180882, -0.1495732, -1.2586913, 0.54266775, -1.9635907, -0.029956235, -0.2124114, -19.667015, 23.306767, 2.9035897)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light10" unique_id=205899007]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 2.584
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/Spebshorp/light10" unique_id=1274993543]
+transform = Transform3D(3.855874, -0.62721276, -0.47035405, 0.38384104, -1.1870481, 7.1640534, 0.16450891, 3.6987762, -1.1504967, -0.07364607, 2.4517117, -0.227005)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.32108694
+spot_angle = 35.15625
+
+[node name="Label3D" type="Label3D" parent="World/Mars Base/Spebshorp" unique_id=901974423]
+transform = Transform3D(-0.6820112, 0, 0.73134184, 0, 1.9589791, 0, -0.73134184, 0, -0.6820112, -30.762688, 11.4684105, 8.966178)
+modulate = Color(0.16666675, 1, 0, 1)
+text = "Interact with the switch to start. . ."
+font_size = 60
+
+[node name="Lever" type="Node3D" parent="World/Mars Base/Spebshorp" unique_id=163098398]
+transform = Transform3D(-0.35272357, 0, -0.9357273, 0, 1.4811344, 0, 0.9357273, 0, -0.35272357, -30.480865, 6.3978543, -1.5560353)
+
+[node name="XRToolsInteractableHinge" type="Node3D" parent="World/Mars Base/Spebshorp/Lever" unique_id=444540191]
+script = ExtResource("7_cdqbm")
+metadata/_custom_type_script = "uid://c8gx2wc7hsxf5"
+
+[node name="Pivot" type="Node3D" parent="World/Mars Base/Spebshorp/Lever/XRToolsInteractableHinge" unique_id=1972970721]
+transform = Transform3D(0.9999996, 0, 0, 0, 0.9999998, 0, 0, 0, 0.9999996, 0.008182526, -0.9711094, 0.57969666)
+script = ExtResource("5_tereu")
+
+[node name="crankin _t_straight_up_frfr" parent="World/Mars Base/Spebshorp/Lever/XRToolsInteractableHinge/Pivot" unique_id=1865248394 instance=ExtResource("6_cdqbm")]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.7071067, 0.7071067, -0.12975693, 0.9020276, -0.46209717)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/Lever/XRToolsInteractableHinge" unique_id=1545477697]
+transform = Transform3D(0.9999878, 0, 5.364418e-07, 0, 0.999998, 0, -5.364418e-07, 0, 0.9999878, -0.12649918, 0.16287231, -0.16669464)
+shape = SubResource("BoxShape3D_cdqbm")
+script = SubResource("GDScript_imku0")
+
 [node name="HabitatHallway" parent="World/Mars Base" unique_id=1566238722 instance=ExtResource("4_wc5p8")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 1.4688721, 9.622505)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 1.4541197, 9.622505)
 
 [node name="Floor Collison" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=1116366093]
 transform = Transform3D(9.488433, 0, 0, 0, 0.41399348, 0, 0, 0, -38.851616, 0, -5.525118, 0)
@@ -342,6 +388,78 @@ skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/HabitatHallway/Wall2/StaticBody3D" unique_id=1770153704]
 shape = SubResource("BoxShape3D_jsk3o")
+
+[node name="light5" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=1447379804]
+transform = Transform3D(0.9659258, 0.22414383, -0.12940954, 0.0669873, -0.6994692, -0.71151626, -0.24999999, 0.67860305, -0.6906503, -2.9452853, 5.82032, -16.353704)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light5" unique_id=643817400]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light5" unique_id=264704286]
+transform = Transform3D(3.9767451, -0.047748923, -0.42804533, 0.39587414, -1.1607797, 3.8073456, 0.16966581, 3.8275728, 1.1493058, -0.031047821, 1.6351948, 0.20902252)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.29752094
+
+[node name="light6" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=849836860]
+transform = Transform3D(0.96592593, -0.2241439, 0.12940954, -0.066987276, -0.6994692, -0.71151626, 0.25, 0.67860305, -0.6906502, 2.9409385, 5.82032, -16.353704)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light6" unique_id=1142501006]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light6" unique_id=250394448]
+transform = Transform3D(3.9767451, -0.047748923, -0.42804533, 0.39587414, -1.1607797, 3.8073456, 0.16966581, 3.8275728, 1.1493058, -0.031047821, 1.6351948, 0.20902252)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.29752094
+
+[node name="light7" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=994768183]
+transform = Transform3D(-0.96592593, -0.2241439, 0.1294096, 0.06698731, -0.6994692, -0.71151626, 0.25000006, -0.67860305, 0.6906502, 2.9409385, 5.82032, 18.561512)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light7" unique_id=859045799]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light7" unique_id=2070989001]
+transform = Transform3D(3.9767451, -0.047748923, -0.42804533, 0.39587414, -1.1607797, 3.8073456, 0.16966581, 3.8275728, 1.1493058, -0.031047821, 1.6351948, 0.20902252)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.29752094
+
+[node name="light8" type="MeshInstance3D" parent="World/Mars Base/HabitatHallway" unique_id=828417570]
+transform = Transform3D(-0.96592593, 0.22414382, -0.1294095, -0.066987254, -0.6994692, -0.71151626, -0.24999993, -0.6786032, 0.6906502, -2.9452853, 5.82032, 18.561512)
+mesh = SubResource("CylinderMesh_jsk3o")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light8" unique_id=1196893197]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="World/Mars Base/HabitatHallway/light8" unique_id=1705028379]
+transform = Transform3D(3.9767451, -0.047748923, -0.42804533, 0.39587414, -1.1607797, 3.8073456, 0.16966581, 3.8275728, 1.1493058, -0.031047821, 1.6351948, 0.20902252)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.29752094
 
 [node name="HabitatCornerStart" parent="World/Mars Base" unique_id=116163171 instance=ExtResource("3_i5arm")]
 physics_interpolation_mode = 2
@@ -733,3 +851,9 @@ shape = SubResource("BoxShape3D_4arys")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -330.00995, -11.690842, 110.54997)
 mesh = ExtResource("1_a0tk4")
 surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
+
+[node name="powerplant in the distance2" parent="World" unique_id=352877710 instance=ExtResource("14_wlxy5")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 118.03659, -1.1843166, 20.737904)
+
+[node name="powerplant in the distance" parent="World" unique_id=821160208 instance=ExtResource("14_wlxy5")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 179.00555, -1.1843166, 39.895664)

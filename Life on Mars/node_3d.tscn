@@ -132,8 +132,9 @@ size = Vector2(2, 2)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_jsk3o"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_cdqbm"]
-size = Vector3(1.2529297, 1.3257446, 1.4909592)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_imku0"]
+radius = 0.43066406
+height = 1.6723633
 
 [sub_resource type="GDScript" id="GDScript_imku0"]
 script/source = "extends CollisionShape3D
@@ -349,8 +350,8 @@ script = ExtResource("5_tereu")
 transform = Transform3D(0.99999994, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.7071067, 0.7071067, -0.12975693, 0.9020276, -0.46209717)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/Mars Base/Spebshorp/Lever/XRToolsInteractableHinge" unique_id=1545477697]
-transform = Transform3D(0.9999878, 0, 5.364418e-07, 0, 0.999998, 0, -5.364418e-07, 0, 0.9999878, -0.12649918, 0.16287231, -0.16669464)
-shape = SubResource("BoxShape3D_cdqbm")
+transform = Transform3D(0.93873024, -0.011212081, -0.34440976, 0.27700487, 0.6190515, 0.73485804, 0.20496893, -0.78526455, 0.5842289, -0.12468338, 0.06145954, -0.038024902)
+shape = SubResource("CapsuleShape3D_imku0")
 script = SubResource("GDScript_imku0")
 
 [node name="HabitatHallway" parent="World/Mars Base" unique_id=1566238722 instance=ExtResource("4_wc5p8")]

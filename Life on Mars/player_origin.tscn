@@ -6,9 +6,7 @@
 [ext_resource type="Script" uid="uid://b18kkstg643yw" path="res://addons/godot-xr-tools/functions/function_pickup.gd" id="4_pn0p4"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_1nt8d"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="6_n4ba1"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_yqn1w"]
-size = Vector3(0.07885742, 0.115234375, 0.21380615)
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="6_seboi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yqn1w"]
 
@@ -31,10 +29,6 @@ strafe = true
 script = ExtResource("4_pn0p4")
 metadata/_custom_type_script = "uid://b18kkstg643yw"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftHand/LeftPhysicsHand" unique_id=924458377]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00036621094, 0.020507813, -0.032806396)
-shape = SubResource("BoxShape3D_yqn1w")
-
 [node name="RightHand" type="XRController3D" parent="." unique_id=164273940]
 tracker = &"right_hand"
 
@@ -45,13 +39,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0011566877, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0.05)
 turn_mode = 2
 
-[node name="XRToolsFunctionPickup" type="Node3D" parent="RightHand/RightPhysicsHand" unique_id=1330182316]
-script = ExtResource("4_pn0p4")
-metadata/_custom_type_script = "uid://b18kkstg643yw"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RightHand/RightPhysicsHand" unique_id=274895958]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00036621094, 0.020507813, -0.032806396)
-shape = SubResource("BoxShape3D_yqn1w")
+[node name="FunctionPickup" parent="RightHand/RightPhysicsHand" unique_id=650563868 instance=ExtResource("6_seboi")]
 
 [node name="PlayerBody" parent="." unique_id=469252546 instance=ExtResource("6_1nt8d")]
 

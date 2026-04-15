@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://baxepasx3ns64"
-path="res://.godot/imported/PowerPlant.blend-0e396c96011f54e65203c598ca06d774.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/PowerPlant.blend"
-dest_files=["res://.godot/imported/PowerPlant.blend-0e396c96011f54e65203c598ca06d774.scn"]
 
 [params]
 

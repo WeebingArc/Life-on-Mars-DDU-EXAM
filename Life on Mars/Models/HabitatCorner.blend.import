@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cye64ucggshag"
-path="res://.godot/imported/HabitatCorner.blend-99411673d9241e840e2780ecb7373c62.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/HabitatCorner.blend"
-dest_files=["res://.godot/imported/HabitatCorner.blend-99411673d9241e840e2780ecb7373c62.scn"]
 
 [params]
 

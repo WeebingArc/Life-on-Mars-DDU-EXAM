@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://s2icm00v61fj"
-path="res://.godot/imported/BARREL!!.blend-1c5c350b22de94d30e84fe54e5666b45.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/BARREL!!.blend"
-dest_files=["res://.godot/imported/BARREL!!.blend-1c5c350b22de94d30e84fe54e5666b45.scn"]
 
 [params]
 

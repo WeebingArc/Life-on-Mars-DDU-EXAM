@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cksyrne3bexf7"
-path="res://.godot/imported/Spebshorp.blend-b55ba779741e93244f84e1f08a644f2d.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/Spebshorp.blend"
-dest_files=["res://.godot/imported/Spebshorp.blend-b55ba779741e93244f84e1f08a644f2d.scn"]
 
 [params]
 

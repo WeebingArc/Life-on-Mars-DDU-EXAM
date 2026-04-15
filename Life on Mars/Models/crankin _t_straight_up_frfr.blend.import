@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bmp5ddfhsx1al"
-path="res://.godot/imported/crankin _t_straight_up_frfr.blend-32a2a037cb77581fdc740eb55e1134f7.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/crankin _t_straight_up_frfr.blend"
-dest_files=["res://.godot/imported/crankin _t_straight_up_frfr.blend-32a2a037cb77581fdc740eb55e1134f7.scn"]
 
 [params]
 

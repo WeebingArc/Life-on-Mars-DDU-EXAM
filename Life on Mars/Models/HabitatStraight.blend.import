@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dnaefjkh5llov"
-path="res://.godot/imported/HabitatStraight.blend-adfe95aeb8702f436f59997db51115bd.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/HabitatStraight.blend"
-dest_files=["res://.godot/imported/HabitatStraight.blend-adfe95aeb8702f436f59997db51115bd.scn"]
 
 [params]
 

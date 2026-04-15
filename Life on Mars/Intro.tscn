@@ -1,8 +1,384 @@
 [gd_scene format=3 uid="uid://qrn2ekfebe4j"]
 
 [ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_gjrx4"]
+[ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="3_46ak0"]
+[ext_resource type="Texture2D" uid="uid://5ngar0sstsyd" path="res://Models/textures/Terminal Base Color.png" id="4_46ak0"]
+[ext_resource type="ArrayMesh" uid="uid://bosak83ov6ysb" path="res://Models/A-Door-able.obj" id="4_iysgs"]
+[ext_resource type="ArrayMesh" uid="uid://cnymk4y8d7lrm" path="res://Models/Spebshorp.obj" id="5_iysgs"]
+
+[sub_resource type="Environment" id="Environment_7136s"]
+background_mode = 2
+sky = ExtResource("3_46ak0")
+ambient_light_source = 1
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_bloom = 1.0
+glow_blend_mode = 0
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.52, 0.31798, 0.1924, 1)
+fog_sun_scatter = 0.2
+fog_density = 0.4018
+fog_sky_affect = 0.0
+fog_depth_curve = 0.9999988
+volumetric_fog_enabled = true
+volumetric_fog_length = 5.0
+volumetric_fog_detail_spread = 0.57434916
+adjustment_enabled = true
+adjustment_saturation = 1.83
+
+[sub_resource type="Shader" id="Shader_noarx"]
+code = "shader_type spatial;
+render_mode unshaded, depth_draw_never;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear_mipmap;
+
+uniform float edge_threshold = 0.1;
+uniform vec3 line_color : source_color = vec3(0, 0, 0);
+
+const mat3 sobel_y = mat3(
+	vec3( 1.0,  0.0, -1.0),
+	vec3( 2.0,  0.0, -2.0),
+	vec3( 1.0,  0.0, -1.0)
+);
+
+const mat3 sobel_x = mat3(
+	vec3( 1.0,  2.0,  1.0),
+	vec3( 0.0,  0.0,  0.0),
+	vec3(-1.0, -2.0, -1.0)
+);
+
+vec3 normalize_normal(vec3 normal){
+	return normalize(normal * 2.0 - 1.0);
+}
+
+void vertex(){
+	// Fullscreen quad
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
+}
+
+void fragment() {
+
+	vec2 uv = SCREEN_UV;
+	vec4 screen_color = texture(SCREEN_TEXTURE, uv);
+
+	// Proper pixel size
+	vec2 offset = 1.0 / VIEWPORT_SIZE;
+
+	vec3 normal = normalize_normal(texture(NORMAL_TEXTURE, uv).rgb);
+
+	vec3 n  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(0.0, -offset.y)).rgb);
+	vec3 s  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(0.0,  offset.y)).rgb);
+	vec3 e  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x, 0.0)).rgb);
+	vec3 w  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x, 0.0)).rgb);
+	vec3 nw = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x, -offset.y)).rgb);
+	vec3 ne = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x, -offset.y)).rgb);
+	vec3 sw = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x,  offset.y)).rgb);
+	vec3 se = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x,  offset.y)).rgb);
+
+	mat3 surrounding_pixels = mat3(
+		vec3(length(nw - normal), length(n - normal), length(ne - normal)),
+		vec3(length(w  - normal), 0.0,               length(e  - normal)),
+		vec3(length(sw - normal), length(s - normal), length(se - normal))
+	);
+
+	float edge_x =
+		dot(sobel_x[0], surrounding_pixels[0]) +
+		dot(sobel_x[1], surrounding_pixels[1]) +
+		dot(sobel_x[2], surrounding_pixels[2]);
+
+	float edge_y =
+		dot(sobel_y[0], surrounding_pixels[0]) +
+		dot(sobel_y[1], surrounding_pixels[1]) +
+		dot(sobel_y[2], surrounding_pixels[2]);
+
+	float edge = length(vec2(edge_x, edge_y));
+
+	// Create edge mask without branching
+	float edge_mask = step(edge_threshold, edge);
+
+	// Blend original screen with line color
+	vec3 final_color = mix(screen_color.rgb, line_color, edge_mask);
+
+	ALBEDO = final_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3fl7"]
+render_priority = 0
+shader = SubResource("Shader_noarx")
+shader_parameter/edge_threshold = 0.1
+shader_parameter/line_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_eejac"]
+material = SubResource("ShaderMaterial_r3fl7")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="Animation" id="Animation_33olo"]
+resource_name = "Door Opening 2"
+length = 0.4
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.10324955, 3.7187812, -0.9848745, 0.4, 1, 0.08035028, 3.718781, -2.9044633)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ADoorAble")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0.10324955, -0.3463112, 1.0107735, 0.4, 1, 0.08035028, -0.3463112, 2.6913013)
+
+[sub_resource type="Animation" id="Animation_465o5"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 3.7187812, -0.9848745)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ADoorAble")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.3463112, 1.0107735)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sfgsg"]
+_data = {
+&"Door Opening 2": SubResource("Animation_33olo"),
+&"RESET": SubResource("Animation_465o5")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1rpvy"]
+albedo_texture = ExtResource("4_46ak0")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6omm5"]
+points = PackedVector3Array(-30.972351, -4.5302734, -15.3868265, 30.530273, 12.438488, -13.265731, 30.530273, -2.4091783, -12.205183, -28.92642, 12.800378, -12.114711, 16.733604, 12.438488, -16.447374, 30.530273, -4.5302734, -15.3868265, -32.037468, -4.5302734, -12.205183, -30.972351, 12.438488, -15.3868265, -1.2861538, -4.5302734, -16.447374, 30.530273, 12.438488, -15.3868265, -1.2861538, 12.438488, -16.447374, 16.733604, -4.5302734, -16.447374, 28.541748, -4, -12.337751, -32.11577, 12.175338, -12.27097)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4ad6s"]
+points = PackedVector3Array(-36.8145, 23.069128, -0.6634426, 30.530273, 24.104927, -0.5391598, -10.821947, 26.225294, -0.5391598, -30.979826, 26.225294, -15.385374, 30.530273, 26.225294, -15.385374, 30.530273, 23.044277, -13.264486, -29.438097, 23.133211, -15, 30.530273, 26.225294, -0.5391598, -37.344772, 24.104927, -0.5391598, 15.139827, 23.170408, -15.816594, -18.24329, 23.044277, -0.5391598, -33.09926, 26.225294, -11.143599, 16.73734, 26.225294, -16.447374, -37.344772, 24.104927, -6.90338, 28.632647, 23.133211, -15, -36.23693, 23.096197, -6.9552794, -33.09926, 26.225294, -13.264486, -31.539791, 23.127813, -13.013895)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7136s"]
+points = PackedVector3Array(-1.2878153, -4.530274, 16.429602, -36.8145, -0.32122564, -0.40659142, 30.530273, -2.4091787, -0.5391598, 28.846779, -0.39330196, 15, -29.61207, -0.39330196, 15, 30.530273, -4.530274, -0.5391598, -37.344772, -4.530274, 9.004938, 30.530273, -4.530274, 15.368223, -36.281734, -3.4693112, -0.5391598, -30.979826, -4.530274, 15.368223, 30.530273, -0.28808355, 13.2471285, -32.03622, -4.530274, 2.6433134, -26.734314, -0.28808355, -0.5391598, 15.192306, -0.45076573, 15.7788725, -35.513485, -0.4025391, 8.947755, 16.73734, -4.530274, 16.429602, 15.680946, -4.530274, -0.5391598, -37.344772, -3.4693112, 0.5222182, -37.344772, -4.530274, 6.885504, -32.710876, -0.38818455, 11.987209)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_eejac"]
+points = PackedVector3Array(-37.343422, -2.4077258, -6.90203, -37.343422, -2.4077258, -0.5391598, -37.343422, 12.438488, -6.90203, -22.833061, -1.9603177, 0.074017815, -27.801609, 12.438488, -12.205183, -34.16147, 12.438488, -0.5391598, -33.10082, -3.4697266, -12.205183, -24.619656, 10.316044, -11.144324, -33.10082, 12.438488, -12.205183, -23.67038, -3.3396482, -12.109793, -36.282772, -3.4697266, -0.5391598, -36.8145, 11.828133, -0.98675394, -27.801609, 6.074268, -0.5391598, -23.557655, -3.4697266, -7.961747, -36.282772, 12.438488, -9.022606, -24.619656, 10.316044, -12.205183, -35.22212, -3.4697266, -10.083466, -33.10082, -3.4697266, -0.5391598, -23.529379, -2.4359999, -12.229113, -36.282772, -2.4077258, -9.022606, -27.801609, 12.438488, -11.144324)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_33olo"]
+points = PackedVector3Array(-10.827034, -1.3489423, -0.5391598, -23.55236, -3.469415, -12.205183, -22.199821, -2.4359999, -11.913402, 30.524982, -4.5299625, -12.205183, 15.677004, -4.5299625, -0.5391598, 29.172443, -2.4359999, -11.913402, 29.172443, -2.4359999, -0.830941, -21.429708, -3.469415, -0.5391598, -14.008366, -4.5299625, -12.205183, -25.115732, -1.2569792, -10.298052, 30.524982, -4.5299625, -0.5391598, -23.55236, -1.3489423, -0.5391598, -11.885714, -1.3489423, -7.961747, -23.55236, -2.4094899, -0.5391598, -14.008366, -4.5299625, -11.144324, -23.55236, -3.469415, -7.961747, -10.827034, -1.3489423, -6.90203)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_465o5"]
+points = PackedVector3Array(-37.34384, 23.043964, -6.9036913, -30.982735, 12.438488, -15.385373, -28.04852, 12.713808, -15, -37.34384, 12.438488, -0.5406132, -28.818071, 23.106825, -0.45262697, -28.04852, 22.768644, -15, -37.34384, 23.043964, -0.5406132, -27.80078, 12.438488, -11.1438055, -37.34384, 12.438488, -6.9036913, -34.161884, 12.438488, -0.5406132, -33.101547, 23.043964, -13.263863, -30.982735, 23.043964, -15.385373, -27.80078, 23.043964, -11.1438055, -36.282566, 12.438488, -9.022295, -28.862053, 21.983002, -0.5406132, -36.282566, 23.043964, -9.022295, -33.101547, 12.438488, -13.263863)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sfgsg"]
+points = PackedVector3Array(30.530273, 23.043964, -13.266042, 30.530273, 12.438488, -13.266042, -27.876297, 12.424587, -13.261872, -27.799843, 23.043964, -15.386412, 16.74139, 23.043964, -16.447063, -27.876297, 23.057865, -13.261872, 30.530273, 12.438488, -15.386412, -27.799843, 12.438488, -15.386412, 16.74139, 12.438488, -16.447063, 30.530273, 23.043964, -15.386412)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_f4n53"]
+points = PackedVector3Array(-36.8145, 0.43501708, 0.18394037, -25.949389, 15.251077, 15, -25.487707, 15.880643, 13.436, -37.344772, 15.620131, 7.942833, -30.983044, -0.28808308, 15.369054, -28.861326, 6.0761366, -0.5391598, -25.67875, -0.28808308, 7.942833, -34.162197, 15.620131, -0.5391598, -37.344772, -0.28808308, 9.004834, -30.983044, 15.620131, 15.369054, -25.949389, 0.080970764, 15, -33.12659, -0.41445532, -0.665532, -36.8145, 14.897031, 0.18394037, -29.789772, -0.9506749, 2.2479644, -25.67875, 6.0761366, 6.887061, -37.344772, 12.4372425, 9.004834, -28.861326, 3.955249, -0.5391598, -25.67875, 2.8963628, 6.887061, -33.101337, 15.620131, 13.245052)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wismm"]
+points = PackedVector3Array(-25.67875, -0.28808308, 15.368847, 30.530273, 15.620131, 15.368847, 30.530273, 15.620131, 13.247959, -28.009819, 16.279867, 13.116012, 30.530273, -0.28808308, 13.247959, 16.736614, -0.28808308, 16.429602, -1.2826247, 15.620131, 16.429602, -28.009819, -0.94782007, 13.116012, -25.67875, 15.620131, 15.368847, 30.530273, -0.28808308, 15.368847, 16.736614, 15.620131, 16.429602, -1.2826247, -0.28808308, 16.429602)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_n5nwx"]
+points = PackedVector3Array(-34.16313, 15.620131, 11.127695, -16.135586, 26.225607, 15.368017, -16.135586, 26.225607, 11.127695, -16.135586, 15.620131, 15.368017, -30.979725, 26.225607, 15.368017, -34.16313, 25.164644, 10.066317, -15.193867, 24.435999, 9.789368, -30.979725, 15.620131, 15.368017, -28.85863, 15.620131, 10.066317, -16.135586, 15.620131, 13.247336, -33.10082, 26.225607, 13.247336, -33.725132, 15.877802, 10.1951275, -33.10082, 26.225607, 11.127695, -33.10082, 15.620131, 13.247336, -34.16313, 25.164644, 11.127695)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mmn27"]
+points = PackedVector3Array(30.530273, 26.225397, 12.187411, -16.13382, 24.104925, -0.5391598, -16.13382, 25.165161, -0.5391598, 30.530273, 24.104925, -0.5391598, -16.13382, 24.104925, 12.187411, 30.530273, 26.225397, -0.5391598, -16.13382, 26.225397, 12.187411, 30.530273, 24.104925, 12.187411, -10.8306675, 26.225397, -0.5391598, -16.13382, 26.225397, 10.065901)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dbfec"]
+points = PackedVector3Array(-16.13382, 15.620131, 15.368743, 30.530273, 26.225607, 15.368743, 29.537603, 26, 12.278458, 30.530273, 15.620131, 15.368743, -1.2840776, 26.225607, 16.429186, -16.13382, 24.103682, 12.188241, 30.530273, 15.620131, 13.248685, 16.74025, 15.620131, 16.429186, -16.13382, 26.225607, 15.368743, -17.152102, 15.388703, 14.308714, -16.13382, 26.225607, 12.188241, -1.2840776, 15.620131, 16.429186, 16.74025, 26.225607, 16.429186, 30.530273, 24.103682, 12.188241, 18.86425, 15.620131, 13.248685)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dfov6"]
+points = PackedVector3Array(-37.343323, 15.620131, -0.5391598, -29.920944, 21.983416, 10.066317, -29.920944, 15.620131, 10.066317, -37.343323, 21.983416, 7.9443913, -34.20513, 22.241135, -0.9686923, -35.223057, 15.620131, 10.066317, -34.162197, 15.620131, -0.5391598, -37.343323, 21.983416, -0.5391598, -37.343323, 15.620131, 7.9443913, -35.223057, 21.983416, 10.066317, -29.920944, 15.620131, 9.005354, -29.920944, 21.983416, 9.005354)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ixiwt"]
+points = PackedVector3Array(-16.135895, 24.104095, 10.066317, -36.8145, 22.063261, -0.27399713, -37.344772, 21.983728, 7.9443913, -35.220978, 25.164745, 10.066317, -16.135895, 25.164745, -0.5391598, -18.257614, 23.044378, -0.5391598, -37.344772, 24.104095, -0.5391598, -30.268066, 21.808931, 10.649086, -16.135895, 25.164745, 10.066317, -28.857899, 21.983728, -0.5391598, -23.559834, 25.164745, -0.5391598, -18.257614, 23.044378, 6.884466, -37.344772, 24.104095, 7.9443913, -35.220978, 25.164745, 7.9443913, -16.135895, 24.104095, -0.5391598)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_swg0i"]
 
 [node name="Node3D" type="Node3D" unique_id=1614814063]
 
 [node name="XROrigin3D" parent="." unique_id=1846510992 instance=ExtResource("1_gjrx4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Environment & Shaders" type="Node" parent="." unique_id=1163618578]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment & Shaders" unique_id=187598305]
+environment = SubResource("Environment_7136s")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment & Shaders" unique_id=549156298]
+transform = Transform3D(-0.2945076, 0.91542965, 0.27432486, -0.9322228, -0.33836672, 0.12833023, 0.2102997, -0.21793762, 0.95303583, 0, 0, 0)
+light_energy = 0.622
+
+[node name="Find Edges Shader" type="MeshInstance3D" parent="Environment & Shaders" unique_id=1509050341]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_eejac")
+skeleton = NodePath("../..")
+
+[node name="ADoorAble" type="MeshInstance3D" parent="Environment & Shaders" unique_id=749314513]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3463112, 1.0107735)
+mesh = ExtResource("4_iysgs")
+
+[node name="ADoorAble2" type="MeshInstance3D" parent="Environment & Shaders/ADoorAble" unique_id=946431757]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.056005478, 0, 4.8961546e-09)
+mesh = ExtResource("4_iysgs")
+skeleton = NodePath("../..")
+
+[node name="ADoorAble2" type="MeshInstance3D" parent="Environment & Shaders" unique_id=962503435]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 3.7187812, -0.9848745)
+mesh = ExtResource("4_iysgs")
+
+[node name="ADoorAble2" type="MeshInstance3D" parent="Environment & Shaders/ADoorAble2" unique_id=862543420]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.056005478, 0, 4.8961546e-09)
+mesh = ExtResource("4_iysgs")
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Environment & Shaders/ADoorAble2" unique_id=1517366342]
+libraries/ = SubResource("AnimationLibrary_sfgsg")
+
+[node name="Spebshorp" type="MeshInstance3D" parent="Environment & Shaders" unique_id=2067607706]
+transform = Transform3D(-0.13, -1.2853165e-15, 1.9629454e-08, -1.7160613e-15, 0.09736898, 0, -1.9629454e-08, 0, -0.13, 3.9190178, 0.9541235, -0.06012562)
+material_override = SubResource("StandardMaterial3D_1rpvy")
+mesh = ExtResource("5_iysgs")
+skeleton = NodePath("../ADoorAble2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment & Shaders/Spebshorp" unique_id=1406268189]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=497516161]
+shape = SubResource("ConvexPolygonShape3D_6omm5")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=993680232]
+shape = SubResource("ConvexPolygonShape3D_4ad6s")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1742394410]
+shape = SubResource("ConvexPolygonShape3D_7136s")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=658723187]
+shape = SubResource("ConvexPolygonShape3D_eejac")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1250799923]
+shape = SubResource("ConvexPolygonShape3D_33olo")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1219130462]
+shape = SubResource("ConvexPolygonShape3D_465o5")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=775672056]
+shape = SubResource("ConvexPolygonShape3D_sfgsg")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1265528619]
+shape = SubResource("ConvexPolygonShape3D_f4n53")
+
+[node name="CollisionShape3D9" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1842483828]
+shape = SubResource("ConvexPolygonShape3D_wismm")
+
+[node name="CollisionShape3D10" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=80558718]
+shape = SubResource("ConvexPolygonShape3D_n5nwx")
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=64057955]
+shape = SubResource("ConvexPolygonShape3D_mmn27")
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=1889038287]
+shape = SubResource("ConvexPolygonShape3D_dbfec")
+
+[node name="CollisionShape3D13" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=517098783]
+shape = SubResource("ConvexPolygonShape3D_dfov6")
+
+[node name="CollisionShape3D14" type="CollisionShape3D" parent="Environment & Shaders/Spebshorp/StaticBody3D" unique_id=435897418]
+shape = SubResource("ConvexPolygonShape3D_ixiwt")
+
+[node name="light6" type="MeshInstance3D" parent="Environment & Shaders/Spebshorp" unique_id=1097487382]
+transform = Transform3D(0.4933626, -1.2860305, 0.18974781, 0.07304382, -0.45091084, -2.2347143, 1.9054636, 0.49439695, 0.25671092, 27.474098, 22.561401, -12.550502)
+mesh = SubResource("CylinderMesh_swg0i")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light6" unique_id=1790266564]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light6" unique_id=264621479]
+transform = Transform3D(3.8434188, -0.58591044, -0.75985795, 0.38260108, -1.4579893, 5.3261447, 0.1639775, 4.6117125, 0.41734964, -0.1330862, 2.0927525, 0.062316895)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.31572795
+spot_angle = 35.15625
+
+[node name="light7" type="MeshInstance3D" parent="Environment & Shaders/Spebshorp" unique_id=1525827771]
+transform = Transform3D(-0.44774923, -1.3685573, 0.04886415, 0.07304381, -0.4509111, -2.2347143, 1.9166944, -0.15922917, 0.31546307, 27.47408, 22.950462, 11.914583)
+mesh = SubResource("CylinderMesh_swg0i")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light7" unique_id=1630991040]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 7.0319724
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light7" unique_id=796489575]
+transform = Transform3D(3.8434188, -0.58591044, -0.75985795, 0.38260108, -1.4579893, 5.3261447, 0.1639775, 4.6117125, 0.41734964, -0.1330862, 2.0927525, 0.062316895)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.31572795
+spot_angle = 35.15625
+
+[node name="light9" type="MeshInstance3D" parent="Environment & Shaders/Spebshorp" unique_id=2108992101]
+transform = Transform3D(-0.038340114, -0.7186271, -2.180882, -0.1495732, -1.2586913, 0.54266775, -1.9635907, -0.029956235, -0.2124114, -19.667015, 23.306763, -5.1680365)
+mesh = SubResource("CylinderMesh_swg0i")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light9" unique_id=1652836456]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 2.584
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light9" unique_id=427653485]
+transform = Transform3D(3.855874, -0.62721276, -0.47035405, 0.38384104, -1.1870481, 7.1640534, 0.16450891, 3.6987762, -1.1504967, -0.07364607, 2.4517117, -0.227005)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.32108694
+spot_angle = 35.15625
+
+[node name="light10" type="MeshInstance3D" parent="Environment & Shaders/Spebshorp" unique_id=965889716]
+transform = Transform3D(-0.03834011, -0.7186271, -2.180882, -0.14957322, -1.2586913, 0.5426678, -1.9635907, -0.029956235, -0.2124114, -19.667015, 23.30677, 2.9035897)
+mesh = SubResource("CylinderMesh_swg0i")
+skeleton = NodePath("../../HabitatCornerStart")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light10" unique_id=609282200]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, -4, 0, 4, -1.7484555e-07, 0, 0.97557926, -0.020356178)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 2.584
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Environment & Shaders/Spebshorp/light10" unique_id=676456297]
+transform = Transform3D(3.855874, -0.62721276, -0.47035405, 0.38384104, -1.1870481, 7.1640534, 0.16450891, 3.6987762, -1.1504967, -0.07364607, 2.4517117, -0.227005)
+light_energy = 2.108
+light_indirect_energy = 0.0
+light_specular = 0.0
+spot_range = 0.32108694
+spot_angle = 35.15625
+
+[node name="Label3D" type="Label3D" parent="Environment & Shaders/Spebshorp" unique_id=702268545]
+transform = Transform3D(-0.6820112, 0, 0.73134184, 0, 1.9589791, 0, -0.73134184, 0, -0.6820112, -30.762688, 11.468411, 8.966177)
+modulate = Color(0.16666675, 1, 0, 1)
+text = "Interact with the switch to start. . ."
+font_size = 60

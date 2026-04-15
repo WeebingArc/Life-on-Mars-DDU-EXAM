@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bmqhskse76nsa"
-valid=false
+path="res://.godot/imported/crankin _t_straight_up_frfr.blend-e094c5eff3981f0e61709e004b9cc41e.scn"
 
 [deps]
 
 source_file="res://addons/godot-xr-tools/player/poke/crankin _t_straight_up_frfr.blend"
+dest_files=["res://.godot/imported/crankin _t_straight_up_frfr.blend-e094c5eff3981f0e61709e004b9cc41e.scn"]
 
 [params]
 

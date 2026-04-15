@@ -3,12 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b2ponam5xlj08"
-valid=false
+uid="uid://dmnx8a6lvt7vp"
+path="res://.godot/imported/HabitatHallway.blend-e27e3ee6506140abe8587d416bceacb5.scn"
 
 [deps]
 
 source_file="res://Models/HabitatHallway.blend"
+dest_files=["res://.godot/imported/HabitatHallway.blend-e27e3ee6506140abe8587d416bceacb5.scn"]
 
 [params]
 

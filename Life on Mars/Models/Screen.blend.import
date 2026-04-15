@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dblc2f02id356"
-path="res://.godot/imported/Screen.blend-4d6ab77b7c30f8af60e4444b322e3d93.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/Screen.blend"
-dest_files=["res://.godot/imported/Screen.blend-4d6ab77b7c30f8af60e4444b322e3d93.scn"]
 
 [params]
 

@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bonksymk7386x"
-path="res://.godot/imported/PowerCell.blend-330100db119d0e6fb03216596b6efba5.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/PowerCell.blend"
-dest_files=["res://.godot/imported/PowerCell.blend-330100db119d0e6fb03216596b6efba5.scn"]
 
 [params]
 

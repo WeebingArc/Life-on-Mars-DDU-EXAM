@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://b5j0iqk8ju7cj"
-path="res://.godot/imported/Doorb.blend-3129f1d3cab8a15471033e6437d17a86.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/Doorb.blend"
-dest_files=["res://.godot/imported/Doorb.blend-3129f1d3cab8a15471033e6437d17a86.scn"]
 
 [params]
 

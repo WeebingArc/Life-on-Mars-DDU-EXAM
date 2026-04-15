@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cobuqpo266bts"
-path="res://.godot/imported/HabitatEnd.blend-0aa637d4a53e50f526fc113863cba624.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/HabitatEnd.blend"
-dest_files=["res://.godot/imported/HabitatEnd.blend-0aa637d4a53e50f526fc113863cba624.scn"]
 
 [params]
 

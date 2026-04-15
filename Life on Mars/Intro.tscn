@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://qrn2ekfebe4j"]
+
+[ext_resource type="PackedScene" uid="uid://c758ox4n0i37o" path="res://player_origin.tscn" id="1_gjrx4"]
+
+[node name="Node3D" type="Node3D" unique_id=1614814063]
+
+[node name="XROrigin3D" parent="." unique_id=1846510992 instance=ExtResource("1_gjrx4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

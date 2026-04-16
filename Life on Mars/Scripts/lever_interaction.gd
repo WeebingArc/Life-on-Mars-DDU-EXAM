@@ -1,24 +1,20 @@
-extends Node3D
+extends StaticBody3D
 
-var grabbing := false
-var can_grab := false
+@onready var prompt_label : Label3D = $Label3D
 
-@onready var lever = $"../Pivot"
-@onready var hand = $"../RightHand"
+signal play_intro
 
-var last_hand_y := 0.0
+func _ready() -> void:
+	$"../Spoker/AudioStreamPlayer3D".connect("finished", next_scene)
 
+func next_scene():
+	get_tree().change_scene_to_file("res://Scenes/node_3d.tscn")
 
-func _process(delta):
-	if can_grab and Input.is_action_pressed("trigger") and !lever.is_locked:
-		if !grabbing:
-			grabbing = true
-			last_hand_y = hand.global_position.y
+func interact():
+	emit_signal("play_intro")
 
-		var delta_y = hand.global_position.y - last_hand_y
-		lever.current_angle += delta_y * 100.0
-		lever.set_lever_angle(lever.current_angle)
+func show_prompt():
+	prompt_label.visible = true
 
-		last_hand_y = hand.global_position.y
-	else:
-		grabbing = false
+func hide_prompt():
+	prompt_label.visible = false

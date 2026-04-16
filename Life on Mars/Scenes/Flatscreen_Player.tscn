@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dcd36a6nugclw"]
+
+[ext_resource type="Script" path="res://Scripts/flatscreen_player_script.gd" id="1_l6e8c"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_r1u32"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=2140902530]
+script = ExtResource("1_l6e8c")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=34067634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D" unique_id=1806356441]
+visible = false
+target_position = Vector3(0, 0, -1.5)
+collide_with_areas = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2146279660]
+shape = SubResource("CapsuleShape3D_r1u32")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1595738851]
+follow_viewport_enabled = true
+
+[node name="Label" type="Label" parent="UI" unique_id=1462292719]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.799988
+offset_top = -14.0
+offset_right = 5.200012
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "□"
+horizontal_alignment = 1

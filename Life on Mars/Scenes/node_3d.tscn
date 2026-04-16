@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://fnne2y61h4fi"]
+
+[ext_resource type="ArrayMesh" uid="uid://vfy7igfq46h" path="res://Models/terrain.obj" id="1_a0tk4"]
+[ext_resource type="PackedScene" uid="uid://dcd36a6nugclw" path="res://Scenes/Flatscreen_Player.tscn" id="1_cb6ip"]
+[ext_resource type="Texture2D" uid="uid://dkb8nc4nagwl2" path="res://Texture/red_sand_diff_1k.jpg" id="2_r3fl7"]
+[ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="4_r3fl7"]
+[ext_resource type="ArrayMesh" uid="uid://cedg7pbj772ph" path="res://Models/Full_Habitat_1.obj" id="6_aeo3b"]
+[ext_resource type="ArrayMesh" uid="uid://cd860lsmqe82t" path="res://Models/Full_Habitat_2.obj" id="7_worak"]
+[ext_resource type="PackedScene" uid="uid://c0htx0j3ihng0" path="res://Models/Greenhouse.blend" id="8_rvjhm"]
+[ext_resource type="PackedScene" uid="uid://bipn5fgfmr4wn" path="res://Models/PowerPlant.blend" id="14_wlxy5"]
+
+[sub_resource type="Environment" id="Environment_noarx"]
+background_mode = 2
+sky = ExtResource("4_r3fl7")
+ambient_light_source = 1
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.0
+sdfgi_use_occlusion = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_bloom = 1.0
+glow_blend_mode = 0
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.52, 0.31798, 0.1924, 1)
+fog_sun_scatter = 0.2
+fog_density = 0.4018
+fog_sky_affect = 0.0
+fog_depth_curve = 0.9999988
+volumetric_fog_enabled = true
+volumetric_fog_length = 5.0
+volumetric_fog_detail_spread = 0.57434916
+adjustment_enabled = true
+adjustment_saturation = 1.83
+
+[sub_resource type="Shader" id="Shader_noarx"]
+code = "shader_type spatial;
+render_mode unshaded, depth_draw_never;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear_mipmap;
+
+uniform float edge_threshold = 0.1;
+uniform vec3 line_color : source_color = vec3(0, 0, 0);
+
+const mat3 sobel_y = mat3(
+	vec3( 1.0,  0.0, -1.0),
+	vec3( 2.0,  0.0, -2.0),
+	vec3( 1.0,  0.0, -1.0)
+);
+
+const mat3 sobel_x = mat3(
+	vec3( 1.0,  2.0,  1.0),
+	vec3( 0.0,  0.0,  0.0),
+	vec3(-1.0, -2.0, -1.0)
+);
+
+vec3 normalize_normal(vec3 normal){
+	return normalize(normal * 2.0 - 1.0);
+}
+
+void vertex(){
+	// Fullscreen quad
+	POSITION = vec4(VERTEX.xy, 1.0, 1.0);
+}
+
+void fragment() {
+
+	vec2 uv = SCREEN_UV;
+	vec4 screen_color = texture(SCREEN_TEXTURE, uv);
+
+	// Proper pixel size
+	vec2 offset = 1.0 / VIEWPORT_SIZE;
+
+	vec3 normal = normalize_normal(texture(NORMAL_TEXTURE, uv).rgb);
+
+	vec3 n  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(0.0, -offset.y)).rgb);
+	vec3 s  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(0.0,  offset.y)).rgb);
+	vec3 e  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x, 0.0)).rgb);
+	vec3 w  = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x, 0.0)).rgb);
+	vec3 nw = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x, -offset.y)).rgb);
+	vec3 ne = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x, -offset.y)).rgb);
+	vec3 sw = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2(-offset.x,  offset.y)).rgb);
+	vec3 se = normalize_normal(texture(NORMAL_TEXTURE, uv + vec2( offset.x,  offset.y)).rgb);
+
+	mat3 surrounding_pixels = mat3(
+		vec3(length(nw - normal), length(n - normal), length(ne - normal)),
+		vec3(length(w  - normal), 0.0,               length(e  - normal)),
+		vec3(length(sw - normal), length(s - normal), length(se - normal))
+	);
+
+	float edge_x =
+		dot(sobel_x[0], surrounding_pixels[0]) +
+		dot(sobel_x[1], surrounding_pixels[1]) +
+		dot(sobel_x[2], surrounding_pixels[2]);
+
+	float edge_y =
+		dot(sobel_y[0], surrounding_pixels[0]) +
+		dot(sobel_y[1], surrounding_pixels[1]) +
+		dot(sobel_y[2], surrounding_pixels[2]);
+
+	float edge = length(vec2(edge_x, edge_y));
+
+	// Create edge mask without branching
+	float edge_mask = step(edge_threshold, edge);
+
+	// Blend original screen with line color
+	vec3 final_color = mix(screen_color.rgb, line_color, edge_mask);
+
+	ALBEDO = final_color;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3fl7"]
+render_priority = 0
+shader = SubResource("Shader_noarx")
+shader_parameter/edge_threshold = 0.1
+shader_parameter/line_color = Color(0, 0, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_jka67"]
+material = SubResource("ShaderMaterial_r3fl7")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jka67"]
+albedo_texture = ExtResource("2_r3fl7")
+
+[node name="Life On Mars" type="Node3D" unique_id=1023627608]
+
+[node name="Environment & Shaders" type="Node" parent="." unique_id=41524546]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment & Shaders" unique_id=435177951]
+environment = SubResource("Environment_noarx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment & Shaders" unique_id=1734107265]
+transform = Transform3D(-0.2945076, 0.91542965, 0.27432486, -0.9322228, -0.33836672, 0.12833023, 0.2102997, -0.21793762, 0.95303583, 0, 0, 0)
+light_color = Color(0.89494604, 0.6802879, 0.5851749, 1)
+light_energy = 0.366
+
+[node name="Find Edges Shader" type="MeshInstance3D" parent="Environment & Shaders" unique_id=1674412334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_jka67")
+skeleton = NodePath("../..")
+
+[node name="CharacterBody3D" parent="." unique_id=2140902530 instance=ExtResource("1_cb6ip")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0382798, 1.9611145, 0)
+
+[node name="Terrain" type="MeshInstance3D" parent="." unique_id=762353242]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -330.00995, -11.690842, 110.54997)
+mesh = ExtResource("1_a0tk4")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_jka67")
+
+[node name="powerplant in the distance2" parent="." unique_id=352877710 instance=ExtResource("14_wlxy5")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 118.03659, -1.1843166, 20.737904)
+
+[node name="powerplant in the distance" parent="." unique_id=821160208 instance=ExtResource("14_wlxy5")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 179.00555, -1.1843166, 39.895664)
+
+[node name="Habitat" type="Node3D" parent="." unique_id=767991714]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 535.2174, 0, 149.83717)
+
+[node name="FullHabitat1" type="MeshInstance3D" parent="Habitat" unique_id=450393198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -167.7255, 1.5258789e-05, -181.37663)
+mesh = ExtResource("6_aeo3b")
+skeleton = NodePath("../..")
+
+[node name="FullHabitat2" type="MeshInstance3D" parent="Habitat" unique_id=129192567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -169.13809, 1.5258789e-05, -181.3229)
+mesh = ExtResource("7_worak")
+skeleton = NodePath("../../Environment & Shaders")
+
+[node name="Greenhouse" parent="Habitat" unique_id=1609942665 instance=ExtResource("8_rvjhm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150.40167, 0.8624687, -159.58575)
+
+[node name="PowerPlant2" parent="Habitat" unique_id=768691423 instance=ExtResource("14_wlxy5")]
+transform = Transform3D(-0.8, 0, 1.2079664e-07, 0, 0.8, 0, -1.2079664e-07, 0, -0.8, 30.47809, 0.7681732, 238.8431)

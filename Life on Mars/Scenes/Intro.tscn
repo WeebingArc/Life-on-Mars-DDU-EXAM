@@ -1,16 +1,25 @@
 [gd_scene format=3 uid="uid://qrn2ekfebe4j"]
 
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_o6jpy"]
+[ext_resource type="PackedScene" uid="uid://b8hc2ex21u8xj" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_fullglove_low.tscn" id="1_skevf"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_t7h8b"]
 [ext_resource type="Sky" uid="uid://1as3j2nvgja8" path="res://skybox.tres" id="3_46ak0"]
+[ext_resource type="Script" uid="uid://ctcliy5gyfp34" path="res://Scripts/right_hand_interact.gd" id="3_n0y1s"]
+[ext_resource type="PackedScene" uid="uid://bkdeegb8w3oah" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_physics_fullglove_low.tscn" id="4_4sbsx"]
 [ext_resource type="Texture2D" uid="uid://5ngar0sstsyd" path="res://Models/textures/Terminal Base Color.png" id="4_46ak0"]
-[ext_resource type="PackedScene" uid="uid://dcd36a6nugclw" path="res://Scenes/Flatscreen_Player.tscn" id="4_d0kpp"]
 [ext_resource type="ArrayMesh" uid="uid://cx52jiptm0all" path="res://Models/A-Door-able.obj" id="4_iysgs"]
 [ext_resource type="ArrayMesh" uid="uid://dgmjikcvmbhb4" path="res://Models/Spebshorp.obj" id="5_iysgs"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_n1sh7"]
 [ext_resource type="AudioStream" uid="uid://bx6yv0f5bran4" path="res://Sounds/0901. Ship Ambiance1.mp3" id="5_tay7t"]
 [ext_resource type="Script" uid="uid://b27g7vs68vcgo" path="res://Scripts/lever_interaction.gd" id="6_iffca"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_vmwaq"]
+[ext_resource type="Script" uid="uid://ck4yn3hxuobj7" path="res://addons/godot-xr-tools/player/player_body.gd" id="7_dbx8m"]
 [ext_resource type="ArrayMesh" uid="uid://iy3gox21m4du" path="res://Models/crankin _t_straight_up_frfr.obj" id="7_o6jpy"]
 [ext_resource type="ArrayMesh" uid="uid://bmth23nye8pa" path="res://Models/Spoker.obj" id="9_yptci"]
 [ext_resource type="AudioStream" uid="uid://c1opmye4udu6l" path="res://Sounds/intro speech sasm.wav" id="10_qs2gn"]
 [ext_resource type="Script" uid="uid://bsdkyjnjk0sng" path="res://Scripts/speaker_intro.gd" id="11_o6jpy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1ou03"]
 
 [sub_resource type="Environment" id="Environment_ina6a"]
 background_mode = 2
@@ -193,6 +202,46 @@ _data = {
 
 [node name="Node3D" type="Node3D" unique_id=1614814063]
 
+[node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=401186319]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.8365917, 0.978492, 0)
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=856439994]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49770164, 0)
+
+[node name="Left Controller" type="XRController3D" parent="XROrigin3D" unique_id=1787684805]
+tracker = &"left_hand"
+
+[node name="LeftPhysicsHand" parent="XROrigin3D/Left Controller" unique_id=127473815 instance=ExtResource("1_skevf")]
+
+[node name="MovementDirect" parent="XROrigin3D/Left Controller" unique_id=1984784065 instance=ExtResource("2_t7h8b")]
+strafe = true
+
+[node name="Right Controller" type="XRController3D" parent="XROrigin3D" unique_id=1675664463]
+tracker = &"right_hand"
+script = ExtResource("3_n0y1s")
+
+[node name="RightPhysicsHand" parent="XROrigin3D/Right Controller" unique_id=659397825 instance=ExtResource("4_4sbsx")]
+
+[node name="MovementTurn" parent="XROrigin3D/Right Controller" unique_id=1621361442 instance=ExtResource("5_n1sh7")]
+turn_mode = 2
+
+[node name="RayCast3D" type="RayCast3D" parent="XROrigin3D/Right Controller" unique_id=1279747758]
+target_position = Vector3(0, 0, -0.2)
+
+[node name="PlayerBody" type="CharacterBody3D" parent="XROrigin3D" unique_id=623013040 groups=["player_body"] instance=ExtResource("6_vmwaq")]
+process_priority = -100
+process_physics_priority = -100
+collision_layer = 524288
+collision_mask = 1023
+script = ExtResource("7_dbx8m")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="XROrigin3D" unique_id=240482869]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XROrigin3D/RigidBody3D" unique_id=1021623954]
+shape = SubResource("CapsuleShape3D_1ou03")
+
+[node name="StartXR" parent="." unique_id=1394797049 instance=ExtResource("1_o6jpy")]
+
 [node name="Environment & Shaders" type="Node" parent="." unique_id=1163618578]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment & Shaders" unique_id=2003166663]
@@ -204,6 +253,7 @@ light_energy = 0.622
 
 [node name="Find Edges Shader" type="MeshInstance3D" parent="Environment & Shaders" unique_id=1509050341]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.715547, 0)
+visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_eejac")
 skeleton = NodePath("../..")
@@ -355,6 +405,10 @@ shape = SubResource("BoxShape3D_u3s32")
 transform = Transform3D(1, -1.1011431e-20, -1.0164395e-20, -1.0164396e-20, 0, -0.99999994, 0, 1.0000002, 0, 2.8045347, -13.871064, -0.11256909)
 shape = SubResource("BoxShape3D_d0kpp")
 
+[node name="Floor2" type="CollisionShape3D" parent="Spebshorp/StaticBody3D" unique_id=1741616562]
+transform = Transform3D(1, 0, -8.4703295e-21, -1.0164395e-20, -4.038968e-28, -1.0000001, 0, 1.0000002, -1.3411887e-29, 2.804535, 28.305454, -0.11256909)
+shape = SubResource("BoxShape3D_d0kpp")
+
 [node name="Table" type="CollisionShape3D" parent="Spebshorp/StaticBody3D" unique_id=1378963553]
 transform = Transform3D(0.9320332, -8.4703295e-22, -0.36237293, -7.297196e-22, 1.0000002, -6.0774955e-23, 0.36237293, -4.9902586e-27, 0.9320332, -24.713814, -9.583459, -3.548966)
 shape = SubResource("BoxShape3D_ina6a")
@@ -365,6 +419,7 @@ shape = SubResource("BoxShape3D_tay7t")
 
 [node name="0901_ShipAmbiance1" type="AudioStreamPlayer" parent="Spebshorp" unique_id=1816004175]
 stream = ExtResource("5_tay7t")
+volume_db = 10.0
 autoplay = true
 parameters/looping = true
 
@@ -391,9 +446,6 @@ text = "Press E to interact"
 root_node = NodePath("../ADoorAble2")
 libraries/ = SubResource("AnimationLibrary_sfgsg")
 
-[node name="CharacterBody3D" parent="." unique_id=2140902530 instance=ExtResource("4_d0kpp")]
-transform = Transform3D(-4.371139e-08, -2.7944128e-21, -1, -5.795149e-15, 1, -2.5410988e-21, 1, 5.795149e-15, -4.371139e-08, 3.6571245, 2.133715, -0.30475837)
-
 [node name="Spoker" type="MeshInstance3D" parent="." unique_id=2032244592]
 transform = Transform3D(0.11078848, -0.09207967, 0.20432143, 0.159796, 0.19226347, 0, -0.15713419, 0.13059899, 0.14405815, 6.4872427, 3.2317443, -1.7844139)
 mesh = ExtResource("9_yptci")
@@ -401,7 +453,8 @@ mesh = ExtResource("9_yptci")
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Spoker" unique_id=252044735]
 transform = Transform3D(4, 0, -1.1920929e-07, -1.1920929e-07, 4, 0, 0, 0, 4, -1.1354141, -4.7683716e-07, -1.9073486e-06)
 stream = ExtResource("10_qs2gn")
-max_distance = 5.0
+volume_db = 15.0
+max_distance = 7.5
 script = ExtResource("11_o6jpy")
 
 [connection signal="play_intro" from="StaticBody3D" to="Spoker/AudioStreamPlayer3D" method="is_autoplay_enabled"]
